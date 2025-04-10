@@ -1,0 +1,16 @@
+// this is the user model 
+
+model User {
+  id Int @id @default(autoincrement())
+  email String @unique
+  FirstName String
+  LastName String
+  password String
+  role Role @default(USER)
+  bookings Booking[]
+  reviews Review[]
+}
+enum Role {
+  ADMIN
+  USER
+}
