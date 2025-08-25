@@ -17,14 +17,18 @@ datasource db {
 model User {
   id Int @id @default(autoincrement())
   email String @unique
+  username String
   FirstName String
   LastName String
   password String
+  number String
+  googliId String?
   role Role @default(USER)
   bookings Booking[]
   reviews Review[]
 }
 
+// not for now
 enum Role {
   ADMIN
   USER
@@ -76,6 +80,5 @@ model Booking {
   endTime DateTime
   user User @relation(fields : [userId] , references : [id]) 
   room Room @relation(fields : [roomId] , references : [id])
-  
 }
 

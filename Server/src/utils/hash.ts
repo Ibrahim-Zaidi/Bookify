@@ -1,20 +1,19 @@
-import bcrypt from "bcrypt";
+import {compare, hash as hashPassword} from "bcrypt";
 import "dotenv/config";
 
 const SALT = 10;
 
 async function hashing(password: string): Promise<string> {
-  const hashed_password: string = await bcrypt.hash(password, SALT);
-
-  return hashed_password;
+  return await hashPassword(password, SALT);
 }
 
-async function compartPassword(
+async function comparePasswords(
   password: string,
   hashedPassword: string
+
 ): Promise<boolean> {
-  const compared = await bcrypt.compare(password, hashedPassword);
-  return compared;
+
+  return await compare(password, hashedPassword);
 }
 
-export { hashing, compartPassword };
+export { hashing, comparePasswords };

@@ -1,18 +1,30 @@
 import express from "express";
-import bodyParser from "body-parser";
+import passport from "passport";
+import "./config/passport";
+
+import public_routes from "./routes/publicRoutes";
+
+import keys from "../src/config/keys";
 import cors from "cors";
-import publicRoutes from "./routes/publicRoutes";
 import "dotenv/config.js";
 
-const port = process.env.PORT || 3000;
+import cookieParser from "cookie-parser";
+
+const port = keys.port;
 const app = express();
 
 // middlewares
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true }));
+app.use(passport.initialize());
 
-app.use("/", publicRoutes);
+// routes
+
+app.use("/", public_routes);
+// app.use("/auth", authMiddlware, authRoutes);
+// app.use('/auth', authRoutes);
 
 app.listen(port, () => console.log("server is running in port : " + port));
