@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../Contexts/AuthContext";
 import { useNavigate } from "react-router";
+import styles from "./login.module.css";
 
 const Login = () => {
   const { handleLogIn } = useAuth();
@@ -28,30 +29,26 @@ const Login = () => {
       if (formData.password.length < 6)
         throw new Error("please enter a bigger password");
 
-      const res = await handleLogIn(formData);
-      console.log(res);
+      const isLoggedIn = await handleLogIn(formData);
 
-      navigate("/Home");
+      console.log(isLoggedIn);
+
+      if (isLoggedIn) navigate("/Home");
+      else throw new Error("login failed");
 
       console.log("Form submitted with data:", formData);
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className={styles.loginContainer}>
+      <div className={styles.loginForm}>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
-          {/* Identifier Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="identifier"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              pass your Username / Email / Number
-            </label>
+          <div className={styles.inputField}>
+            <label htmlFor="identifier">Username / Email / Number</label>
             <input
               type="text"
               id="identifier"
@@ -59,19 +56,12 @@ const Login = () => {
               value={formData.identifier}
               onChange={handleChange}
               placeholder="Enter your username, email, or number"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
           </div>
 
-          {/* Password Input */}
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Password
-            </label>
+          <div className={styles.inputField}>
+            <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
@@ -79,24 +69,16 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
           </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-          >
+          <button type="submit" className={styles.button}>
             Login
           </button>
         </form>
-        <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
-          <button className="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition">
-            login with google
-          </button>
-        </div>
+
+        <button className={styles.googleBtn}>Login with Google</button>
       </div>
     </div>
   );

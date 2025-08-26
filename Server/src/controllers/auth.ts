@@ -9,10 +9,6 @@ async function logIn(req: Request, res: Response) {
 
     const { email, username, number, password } = body;
 
-    // if (!number || !password) {
-    //   throw new Error("please provide your information");
-    // }
-
     const firstInputField = email || username || number;
 
     if (firstInputField && password) {
@@ -24,8 +20,6 @@ async function logIn(req: Request, res: Response) {
 
       if (!foundUser)
         throw new Error("user not found, you need to register first");
-
-      //   const hashedPassword: string = await hashing(password);
 
       const passwordMatch = await comparePasswords(
         password,
@@ -117,8 +111,17 @@ async function register(req: Request, res: Response): Promise<any> {
       },
     });
 
+    const tokenGenerated = jwt.sign(
+      { clientId: user.id, email: user.email, username: user.username },
+      process.env.JWT_SECRET_KEY as string
+    );
+
+    res.cookie("token", tokenGenerated, {
+      httpOnly: true,
+    });
+
     res.status(201).header("location", "/login").json({
-      userInformation: user,
+      token: tokenGenerated,
       message: "Registration Successful! , redirected to login",
     });
   } catch (error: any) {
