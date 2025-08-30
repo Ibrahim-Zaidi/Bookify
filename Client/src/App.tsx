@@ -17,7 +17,6 @@ function App() {
           <Route index element={<Welcoming />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Register" element={<Register />} />
-
           <Route path="/Home" element={<Home />} />
         </Routes>
       </Router>

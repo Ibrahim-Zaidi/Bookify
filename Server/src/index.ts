@@ -24,6 +24,7 @@ app.use(passport.initialize());
 // routes
 
 app.use("/", public_routes);
+
 // app.use("/auth", authMiddlware, authRoutes);
 // app.use('/auth', authRoutes);
 
