@@ -1,16 +1,27 @@
 import React, { useState } from "react";
-import { useAuth } from "../Contexts/AuthContext";
+// import { useAuth } from "../Contexts/AuthContext";
 import { useNavigate } from "react-router";
 import styles from "./login.module.css";
+import api from "../api/axios.ts";
 
 const Login = () => {
-  const { handleLogIn } = useAuth();
+  // const { handleLogIn } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
   });
+
+  // async function handleLogIn(user: object) {
+  //   try {
+  //     console.log(user);
+  //     const res = await api.post("/login", user);
+  //     return res;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,16 +35,18 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(e);
-
       if (formData.password.length < 6)
         throw new Error("please enter a bigger password");
 
-      const isLoggedIn = await handleLogIn(formData);
+      // const isLoggedIn = await handleLogIn(formData);
 
-      console.log(isLoggedIn);
+      console.log(formData);
 
-      if (isLoggedIn) navigate("/Home");
+      const res = await api.post("/login", formData);
+
+      console.log(res);
+
+      if (res) navigate("/Home");
       else throw new Error("login failed");
 
       console.log("Form submitted with data:", formData);

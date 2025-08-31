@@ -79,8 +79,4 @@
   .registrationContainer {
     width: 450px;
   }
-
-  .registrationContainer div {
-    /* grid-template-columns: 1fr auto; */
-  }
 }
