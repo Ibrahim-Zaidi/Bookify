@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import api from "../api/axios";
 
 const GoogleOAuthButton = () => {
   useEffect(() => {
@@ -25,9 +26,17 @@ const GoogleOAuthButton = () => {
     };
   }, []);
 
-  const handleCredentialResponse = (response: any) => {
-    console.log("Credential Response: ", response);
-  };
+  async function handleCredentialResponse(response: any) {
+    console.log(response);
+    const { credential } = response;
+
+    try {
+      const res = await api.post("/auth/google", { token: credential });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div>

@@ -2,9 +2,9 @@ import React, { useReducer } from "react";
 import styles from "./Register.module.css";
 // import { useAuth } from "../Contexts/AuthContext.tsx";
 import { useNavigate } from "react-router";
-import api from "../api/axios.ts";
+import api from "../../api/axios.ts";
 
-import GoogleOAuthButton from "./GoogleOAuthButton.tsx";
+import GoogleOAuthButton from "../../features/GoogleOAuthButton.tsx";
 // import "dotenv/config";
 
 type RegisterState = {
@@ -52,16 +52,6 @@ function registerReducer(
 function Register() {
   const [state, dispatch] = useReducer(registerReducer, initialValues);
   const navigate = useNavigate();
-  // const { handleRegister } = useAuth();
-
-  // async function handleRegister(user: object) {
-  //   try {
-  //     const res = await api.post("/register", user);
-  //     console.log(res);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;

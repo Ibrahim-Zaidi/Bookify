@@ -6,7 +6,7 @@ import {
   refreshAccessToken,
 } from "../controllers/auth";
 
-import { googleAuthInitializer } from "../config/passport";
+import { googleAuthInitializer, googleRecievedAuth } from "../config/passport";
 
 const public_routes = Router();
 
@@ -16,6 +16,6 @@ public_routes.post("/logout", logout);
 public_routes.post("/refresh_Token", refreshAccessToken);
 
 public_routes.post("/auth/google", googleAuthInitializer);
-// public_routes.get("/auth/google/callback", googleRecievedAuth);
+public_routes.get("/auth/google/callback", googleRecievedAuth);
 
 export default public_routes;
