@@ -1,40 +1,31 @@
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
-import { jwtDecode } from "jwt-decode";
 import api from "../api/axios";
+// import { jwtDecode } from "jwt-decode";
 
 function GoogleOAuthButton() {
   const navigate = useNavigate();
 
-  
   async function handleLoginSuccess(response: any) {
     try {
       console.log(response);
 
-      // const userObject: any = (response.credential);
+      const payload = response.credential;
 
-      
-      const sentResult = await api.post('/auth/google', )
-
-
-    }catch() {
-
+      console.log(payload);
+      const sentResult = await api.post("/auth/google", { idToken: payload });
+      console.log(sentResult.data);
+    } catch (err) {
+      console.log(err);
     }
-
   }
-
-
-  
 
   return (
     <GoogleLogin
-
-    onSuccess={(res) => handleLoginSuccess(res)}
-
-      // onSuccess={(res: any) => {
-      //   console.log(jwtDecode(res.credential));
-      //   navigate("/Home");
-      // }}
+      onSuccess={(res) => {
+        handleLoginSuccess(res);
+        // navigate("/Home");
+      }}
       onError={() => console.log("Login Failed")}
     />
   );
