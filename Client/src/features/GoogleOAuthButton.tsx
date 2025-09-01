@@ -1,48 +1,43 @@
-import { useEffect } from "react";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router";
+import { jwtDecode } from "jwt-decode";
 import api from "../api/axios";
 
-const GoogleOAuthButton = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    document.head.appendChild(script);
+function GoogleOAuthButton() {
+  const navigate = useNavigate();
 
-    script.onload = () => {
-      window.google.accounts.id.initialize({
-        client_id:
-          "243806731921-pni20de9b5v3qdndjr2neaprrek9lh8c.apps.googleusercontent.com",
-        callback: handleCredentialResponse,
-      });
-
-      window.google.accounts.id.renderButton(
-        document.getElementById("google-signin-button"),
-        {
-          theme: "outline",
-          size: "medium",
-        }
-      );
-    };
-  }, []);
-
-  async function handleCredentialResponse(response: any) {
-    console.log(response);
-    const { credential } = response;
-
+  
+  async function handleLoginSuccess(response: any) {
     try {
-      const res = await api.post("/auth/google", { token: credential });
-      console.log(res);
-    } catch (err) {
-      console.log(err);
+      console.log(response);
+
+      // const userObject: any = (response.credential);
+
+      
+      const sentResult = await api.post('/auth/google', )
+
+
+    }catch() {
+
     }
+
   }
 
+
+  
+
   return (
-    <div>
-      <div id="google-signin-button"></div>
-    </div>
+    <GoogleLogin
+
+    onSuccess={(res) => handleLoginSuccess(res)}
+
+      // onSuccess={(res: any) => {
+      //   console.log(jwtDecode(res.credential));
+      //   navigate("/Home");
+      // }}
+      onError={() => console.log("Login Failed")}
+    />
   );
-};
+}
 
 export default GoogleOAuthButton;
