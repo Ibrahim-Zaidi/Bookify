@@ -1,4 +1,3 @@
-// Server/src/controllers/googleAuth.ts
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
@@ -18,25 +17,21 @@ export async function handleGoogleAuth(
       return res.status(400).json({ message: "ID token is required" });
     }
 
-    // Verify the ID token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
       audience: keys.google.clientId,
     });
 
+    console.log("ticket =>", ticket);
+
     const payload = ticket.getPayload();
+
+    console.log("payload => ", payload);
 
     if (!payload) {
       return res.status(400).json({ message: "Invalid token payload" });
     }
 
-    // const googleId = payload.sub;
-    // const email = payload.email;
-    // const firstName = payload.given_name || "";
-    // const lastName = payload.family_name || "";
-    // const username = payload.name || email?.split("@")[0] || "";
-
-    // Check if user exists
     let user = await prisma.user.findFirst({
       where: {
         OR: [{ googliId: payload.sub }, { email: payload.email }],
@@ -48,11 +43,11 @@ export async function handleGoogleAuth(
         data: {
           googliId: payload.sub,
           email: payload.email || "",
-          username: payload.name  || "",
-          FirstName: payload. || "",
-          LastName: payload.family_name|| "",
-          password: "", 
-          number: "", 
+          username: payload.name || "",
+          FirstName: payload.given_name || "",
+          LastName: payload.family_name || "",
+          password: "",
+          number: "",
         },
       });
     } else if (!user.googliId) {
@@ -61,6 +56,8 @@ export async function handleGoogleAuth(
         data: { googliId: payload.sub },
       });
     }
+
+    console.log("user => ", user);
 
     const token = jwt.sign(
       {
@@ -75,8 +72,6 @@ export async function handleGoogleAuth(
     res.cookie("token", token, {
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
     });
 
     return res.status(200).json({

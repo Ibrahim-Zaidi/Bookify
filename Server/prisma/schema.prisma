@@ -34,14 +34,6 @@ enum Role {
   USER
 }
 
-model RoomCategory {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
-  rooms Room[]
-}
-
-
 model Room {
   id Int @id @default(autoincrement())
   name String 
@@ -49,8 +41,8 @@ model Room {
   price Float @default(0.00)
   
   isAvailable Boolean @default(true)
-  roomCategoryId Int 
-  roomCategory RoomCategory @relation(fields : [roomCategoryId] , references : [id])
+  Category String
+  // roomCategory RoomCategory @relation(fields : [roomCategoryId] , references : [id])
 
   bookings Booking[]
   reviews Review[]

@@ -1,9 +1,9 @@
 import { Response, Request } from "express";
-import prisma from "../prisma/prismaClient";
+import prisma from "../../prisma/prismaClient";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import jwt from "jsonwebtoken";
-import { comparePasswords, hashing } from "../utils/hash";
+import { comparePasswords, hashing } from "../../utils/hash";
 
 passport.use(
   new LocalStrategy(
@@ -24,15 +24,14 @@ passport.use(
           },
         });
 
-        if (!user) return done(null, false, { message: "User not found" });
+        if (!user) done(null, false, { message: "User not found" });
 
         const isMatch = await comparePasswords(password, user.password);
-        if (!isMatch)
-          return done(null, false, { message: "Invalid credentials" });
+        if (!isMatch) done(null, false, { message: "Invalid credentials" });
 
-        return done(null, user);
+        done(null, user);
       } catch (err) {
-        return done(err);
+        done(err);
       }
     }
   )
@@ -78,7 +77,7 @@ async function refreshAccessToken(req: Request, res: Response) {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
-      return res.status(400).json({ message: "Refresh token is abscent" });
+      res.status(400).json({ message: "Refresh token is abscent" });
     }
 
     jwt.verify(
@@ -86,7 +85,7 @@ async function refreshAccessToken(req: Request, res: Response) {
       process.env.JWT_SECRET_KEY as string,
       (err: any, user: any) => {
         if (err) {
-          return res.status(403).json({ message: "Invalid refresh token" });
+          res.status(403).json({ message: "Invalid refresh token" });
         }
 
         const newAccessToken = jwt.sign(
@@ -99,7 +98,7 @@ async function refreshAccessToken(req: Request, res: Response) {
           { expiresIn: "15m" }
         );
 
-        return res.status(200).json({ accessToken: newAccessToken });
+        res.status(200).json({ accessToken: newAccessToken });
       }
     );
   } catch (error) {

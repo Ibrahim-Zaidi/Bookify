@@ -1,20 +1,28 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import api from "../api/axios";
+import { useAuth } from "../Contexts/AuthContext";
+
 // import { jwtDecode } from "jwt-decode";
 
 function GoogleOAuthButton() {
   const navigate = useNavigate();
+  const { user, setUser, isLoggedIn, setIsLoggedIn }: any = useAuth();
 
   async function handleLoginSuccess(response: any) {
     try {
       console.log(response);
 
       const payload = response.credential;
-
-      console.log(payload);
       const sentResult = await api.post("/auth/google", { idToken: payload });
-      console.log(sentResult.data);
+
+      console.log(sentResult);
+
+      if (sentResult) {
+        setIsLoggedIn(true);
+        setUser(sentResult.data);
+        navigate("/Home");
+      } else throw new Error("Google authentication failed");
     } catch (err) {
       console.log(err);
     }
@@ -24,7 +32,6 @@ function GoogleOAuthButton() {
     <GoogleLogin
       onSuccess={(res) => {
         handleLoginSuccess(res);
-        // navigate("/Home");
       }}
       onError={() => console.log("Login Failed")}
     />

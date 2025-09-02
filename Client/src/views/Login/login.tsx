@@ -1,27 +1,17 @@
 import React, { useState } from "react";
 // import { useAuth } from "../Contexts/AuthContext";
+import GoogleOAuthButton from "../../features/GoogleOAuthButton.tsx";
 import { useNavigate } from "react-router";
 import styles from "./login.module.css";
-import api from "../api/axios.ts";
+import api from "../../api/axios.ts";
 
 const Login = () => {
-  // const { handleLogIn } = useAuth();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
   });
-
-  // async function handleLogIn(user: object) {
-  //   try {
-  //     console.log(user);
-  //     const res = await api.post("/login", user);
-  //     return res;
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -91,7 +81,7 @@ const Login = () => {
           </button>
         </form>
 
-        <button className={styles.googleBtn}>Login with Google</button>
+        <GoogleOAuthButton />
       </div>
     </div>
   );

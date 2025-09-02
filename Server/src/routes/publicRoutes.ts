@@ -1,18 +1,26 @@
 import { Router } from "express";
-import { register, logIn, logout } from "../controllers/auth";
-
+import { register, logIn, logout } from "../controllers/authentication/auth";
+import { refreshAccessToken } from "../controllers/authentication/auth";
 import { handleGoogleAuth } from "../config/passport";
+import addRoom from "../controllers/Rooms/addRoom";
+import addCategory from "../controllers/Categories/addCategories";
 
 const public_routes = Router();
+
+// local oauth routes
 
 public_routes.post("/register", register);
 public_routes.post("/login", logIn);
 public_routes.post("/logout", logout);
 
-public_routes.post("/refresh_Token", refreshAccessToken);
+//google oauht routes
 
+public_routes.post("/refreshToken", refreshAccessToken);
 public_routes.post("/auth/google", handleGoogleAuth);
 
-// public_routes.get("/auth/google/callback", googleRecievedAuth);
+// this route is for statically adding rooms and categories in the database
+
+public_routes.post("/addRoom", addRoom);
+public_routes.post("/addCategory", addCategory);
 
 export default public_routes;
