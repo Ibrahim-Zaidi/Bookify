@@ -13,7 +13,7 @@ passport.use(
     },
     async (identifier: string, password: string, done: any) => {
       try {
-        console.log(identifier);
+        // console.log(identifier);
         const user = await prisma.user.findFirst({
           where: {
             OR: [
@@ -23,8 +23,6 @@ passport.use(
             ],
           },
         });
-
-        console.log(user);
 
         if (!user) return done(null, false, { message: "User not found" });
 
