@@ -2,6 +2,10 @@
 
 :root {
   --main-color: #e3eef5;
+  --secondary-color: #eaebd0;
+  --third-color: #da6c6c;
+  --fourth-color: #cd5656;
+  --fifth-color: #af3e3e;
 }
 
 * {

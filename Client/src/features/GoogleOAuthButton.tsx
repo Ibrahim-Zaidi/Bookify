@@ -16,7 +16,7 @@ function GoogleOAuthButton() {
       const payload = response.credential;
       const sentResult = await api.post("/auth/google", { idToken: payload });
 
-      console.log(sentResult);
+      console.log(sentResult.data);
 
       if (sentResult) {
         setIsLoggedIn(true);

@@ -2,9 +2,9 @@ import React, { useReducer } from "react";
 import styles from "./Register.module.css";
 import { useNavigate } from "react-router";
 import api from "../../api/axios.ts";
-
-import { useAuth } from "../Contexts/AuthContext.tsx";
+// import { useAuth } from "../Contexts/AuthContext.tsx";
 import GoogleOAuthButton from "../../features/GoogleOAuthButton.tsx";
+import { useAuth } from "../../Contexts/AuthContext.tsx";
 // import "dotenv/config";
 
 type RegisterState = {
