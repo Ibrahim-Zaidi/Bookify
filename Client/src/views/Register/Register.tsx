@@ -76,22 +76,6 @@ function Register() {
     }
   };
 
-  // async function handleGoogleAuth(response: any) {
-  //   try {
-  //     const { credential } = response;
-
-  //     const userData = await api.post("/auth/google", { token: credential });
-  //     const user = await userData.json();
-  //     console.log(user);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // async function handleGoogleFailure() {
-  //   console.log("Google Sign-In was unsuccessful. Try again later");
-  // }
-
   return (
     <main className={styles.mainContainer}>
       <div className={styles.titleContainer}>

@@ -2,12 +2,14 @@
 /* eslint-disable react-refresh/only-export-components */
 // import api from "../api/axios.ts";
 import { createContext, useContext, useState } from "react";
+// import { useNavigate } from "react-router";
 
 const AuthContext = createContext(null);
 
-function AuthProvider({ children }) {
+function AuthProvider({ children }: any) {
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const navigate = useNavigate();
 
   const value = {
     user,

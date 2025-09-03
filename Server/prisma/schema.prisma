@@ -26,12 +26,7 @@ model User {
   role Role @default(USER)
   bookings Booking[]
   reviews Review[]
-}
-
-// not for now
-enum Role {
-  ADMIN
-  USER
+  comments Comment[] 
 }
 
 model Room {
@@ -39,14 +34,32 @@ model Room {
   name String 
   description String?
   price Float @default(0.00)
-  
   isAvailable Boolean @default(true)
   Category String
-  // roomCategory RoomCategory @relation(fields : [roomCategoryId] , references : [id])
-
+  imageUrl String?
+  
   bookings Booking[]
   reviews Review[]
+  comments Comment[] 
+}
 
+model Comment {
+  id Int @id @default(autoincrement())
+  content String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  userId Int
+  roomId Int
+  
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+// not for now
+enum Role {
+  ADMIN
+  USER
 }
 
 model Review {

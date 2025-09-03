@@ -1,9 +1,13 @@
 import { Router } from "express";
-import { register, logIn, logout } from "../controllers/authentication/auth";
-import { refreshAccessToken } from "../controllers/authentication/auth";
-import { handleGoogleAuth } from "../config/passport";
+
+// authentication controllers
+import refreshAccessToken from "../controllers/authentication/auth";
+import register from "../controllers/authentication/Register";
+import logIn from "../controllers/authentication/Login";
+import logout from "../controllers/authentication/Logout";
+import handleGoogleAuth from "../controllers/authentication/googleOAuth";
+
 import addRoom from "../controllers/Rooms/addRoom";
-import addCategory from "../controllers/Categories/addCategories";
 
 const public_routes = Router();
 
@@ -21,6 +25,5 @@ public_routes.post("/auth/google", handleGoogleAuth);
 // this route is for statically adding rooms and categories in the database
 
 public_routes.post("/addRoom", addRoom);
-public_routes.post("/addCategory", addCategory);
 
 export default public_routes;
