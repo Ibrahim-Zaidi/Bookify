@@ -1,10 +1,41 @@
-import { Request, Response } from "express";
 import passport from "passport";
-import jwt from "jsonwebtoken";
+import { Strategy as LocalStrategy } from "passport-local";
 import prisma from "../../prisma/prismaClient";
 import { comparePasswords } from "../../utils/hash";
+import Jwt from "jsonwebtoken";
 
-async function logIn(req: Request, res: Response): Promise<any> {
+passport.use(
+  new LocalStrategy(
+    {
+      usernameField: "identifier",
+      passwordField: "password",
+    },
+    async (identifier: string, password: string, done: any) => {
+      try {
+        const user_ = await prisma.user.findFirst({
+          where: {
+            OR: [
+              { email: identifier },
+              { username: identifier },
+              { number: identifier },
+            ],
+          },
+        });
+
+        if (!user_) done(null, false, { message: "User not found" });
+
+        const isMatch = await comparePasswords(password, user_.password);
+        if (!isMatch) done(null, false, { message: "Invalid credentials" });
+
+        done(null, user_);
+      } catch (err) {
+        done(err);
+      }
+    }
+  )
+);
+
+export async function logIn(req: Request, res: Response): Promise<any> {
   try {
     passport.authenticate(
       "local",
@@ -19,8 +50,8 @@ async function logIn(req: Request, res: Response): Promise<any> {
             .json({ message: "User not found. plase register" });
         }
 
-        const token = jwt.sign(
-          { email: user.email, username: user.username },
+        const token = Jwt.sign(
+          { email: user.email, username: user.username, id: user.id },
           process.env.JWT_SECRET_KEY as string,
           { expiresIn: "15m" }
         );
@@ -40,4 +71,4 @@ async function logIn(req: Request, res: Response): Promise<any> {
   }
 }
 
-export default logIn;
+// default export logIn;

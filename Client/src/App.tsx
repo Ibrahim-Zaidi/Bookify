@@ -5,7 +5,7 @@ import { AuthProvider } from "./Contexts/AuthContext.tsx";
 import { lazy } from "react";
 import Home from "./views/Home/Home.tsx";
 import Welcoming from "./views/Welcome/Welcoming.tsx";
-import Room from "./views/Room/Room.tsx";
+import Room from "./views/Room/RoomCard.tsx";
 
 const Login = lazy(() => import("./views/Login/login.tsx"));
 const Register = lazy(() => import("./views/Register/Register.tsx"));

@@ -1,0 +1,47 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  /* padding: 0 20px; */
+  background-color: var(--main-color);
+}
+
+nav {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 1.2rem;
+}
+
+select {
+  color: black;
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0.4rem 0.2rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.userActions img {
+  height: 1.2rem;
+  position: relative;
+  transform: translate(0, 4.5px);
+}
+
+select:focus {
+  outline: none;
+}
+
+.searchSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}

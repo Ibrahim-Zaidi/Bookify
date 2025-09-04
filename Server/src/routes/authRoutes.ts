@@ -1,5 +1,9 @@
-import { Response, Request } from "express";
+import { Router } from "express";
+import addBooking from "../controllers/Bookings/addBooking";
+// import authMiddlware from "../Middlewares/authMiddlware";
 
-async function authRoutes(req: Request, res: Response) {}
+const auth_Routes = Router();
 
-export { authRoutes };
+auth_Routes.post("/addBooking", addBooking);
+
+export default auth_Routes;
