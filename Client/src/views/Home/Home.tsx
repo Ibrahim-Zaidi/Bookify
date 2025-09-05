@@ -2,33 +2,116 @@ import Style from "./Home.module.css";
 import icon from "../../Assets/booking-reservation-icon.svg";
 import { useAuth } from "../../Contexts/AuthContext";
 import { useState } from "react";
-import Room2 from "../../assets/room2.jpg";
+// import { useNavigate } from "react-router";
+
+// import Room2 from "../../assets/room2.jpg";
+import RoomCard from "../Room/RoomCard";
 
 function Home() {
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn, user } = useAuth();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedRating, setSelectedRating] = useState("all");
   const [searchName, setSearchName] = useState("");
+  // const [rooms, setRooms] = useState([]);
   // const [showFilters, setShowFilters] = useState(true);
-  const [showBookings, setShowBookings] = useState(false);
+  // const [showBookings, setShowBookings] = useState(false);
+  // const navigate = useNavigate();
+
+  // const { username } = user;
 
   const rooms = [
     {
       id: 1,
+      name: "Double Garden View",
+      category: "standard",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU",
+    },
+    {
+      id: 2,
       name: "Double Garden View",
       category: "double",
       description:
         "Comfortable room with a double bed and desk for business travelers.",
       price: 229,
       isAvailaible: true,
-      imageUrl: "",
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 3,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 4,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 5,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 5,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 7,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
+    },
+    {
+      id: 8,
+      name: "Double Garden View",
+      category: "double",
+      description:
+        "Comfortable room with a double bed and desk for business travelers.",
+      price: 229,
+      isAvailaible: true,
+      imageUrl:
+        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
     },
   ];
 
   return (
     <div className={Style.container}>
-      {/* Header */}
       <nav className={Style.header}>
         <h1 className={Style.logo}>Bookify</h1>
         <div className={Style.userActions}>
@@ -37,7 +120,7 @@ function Home() {
               <img src={icon} alt="icon " />
               <select className={Style.filterLogged}>
                 <option value="profile" className={Style.welcomeBar}>
-                  Weclome, Ibrahim!
+                  Weclome, ibrahim!
                 </option>
                 <option value="logout">Log Out</option>
               </select>
@@ -67,7 +150,7 @@ function Home() {
           />
           <button
             className={Style.filterToggle}
-            onClick={() => setShowFilters(!showFilters)}
+            // onClick={() => setShowFilters(!showFilters)}
           >
             🔍 Filters
           </button>
@@ -105,6 +188,19 @@ function Home() {
       </section>
 
       {/* result section  */}
+
+      <section className={Style.resultsSection}>
+        <div className={Style.resultsHeader}>
+          <h3>10 rooms available</h3>
+        </div>
+        <div className={Style.roomsGrid}>
+          {rooms.map((room) => (
+            <RoomCard room={room} key={room.id} />
+          ))}
+        </div>
+      </section>
+
+      <footer> hi this is me</footer>
     </div>
   );
 }

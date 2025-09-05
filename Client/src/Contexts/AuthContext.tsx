@@ -1,21 +1,29 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable react-refresh/only-export-components */
-// import api from "../api/axios.ts";
 import { createContext, useContext, useState } from "react";
-// import { useNavigate } from "react-router";
+import api from "../api/axios";
 
 const AuthContext = createContext(null);
 
-function AuthProvider({ children }: any) {
+function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
-  // const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  async function login(credentials: { identifier: string; password: string }) {
+    try {
+      const response = await api.post("/login", credentials);
+      const { user } = response.data;
+
+      setUser(user);
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+    }
+  }
 
   const value = {
     user,
-    setUser,
     isLoggedIn,
-    setIsLoggedIn,
+    login,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -23,8 +31,10 @@ function AuthProvider({ children }: any) {
 
 function useAuth() {
   const context = useContext(AuthContext);
-  if (context === "undefined") return console.log("dont!");
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 }
 
-export { useAuth, AuthProvider };
+export { AuthProvider, useAuth };
