@@ -1,8 +1,9 @@
-import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 import prisma from "../../prisma/prismaClient";
+import { Strategy as LocalStrategy } from "passport-local";
+import passport from "passport";
 import { comparePasswords } from "../../utils/hash";
 import Jwt from "jsonwebtoken";
+import keys from "../../config/keys";
 
 passport.use(
   new LocalStrategy(
@@ -35,7 +36,7 @@ passport.use(
   )
 );
 
-export async function logIn(req: Request, res: Response): Promise<any> {
+async function logIn(req: Request, res: Response): Promise<any> {
   try {
     passport.authenticate(
       "local",
@@ -52,7 +53,7 @@ export async function logIn(req: Request, res: Response): Promise<any> {
 
         const token = Jwt.sign(
           { email: user.email, username: user.username, id: user.id },
-          process.env.JWT_SECRET_KEY as string,
+          keys.jwtToken,
           { expiresIn: "15m" }
         );
 
@@ -63,7 +64,7 @@ export async function logIn(req: Request, res: Response): Promise<any> {
 
         return res
           .status(200)
-          .json({ message: "logged in successfully", token, user });
+          .json({ message: "logged in successfully", user });
       }
     )(req, res);
   } catch (err: any) {
@@ -71,4 +72,4 @@ export async function logIn(req: Request, res: Response): Promise<any> {
   }
 }
 
-// default export logIn;
+export default logIn;

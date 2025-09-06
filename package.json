@@ -11,9 +11,13 @@
   "license": "ISC",
   "description": "fulltack Ecommerce website",
   "dependencies": {
-    "axios": "^1.8.4"
+    "axios": "^1.8.4",
+    "cloudinary": "^1.41.3",
+    "multer": "^2.0.2",
+    "multer-storage-cloudinary": "^4.0.0"
   },
   "devDependencies": {
+    "@types/multer": "^2.0.0",
     "concurrently": "^9.1.2"
   }
 }

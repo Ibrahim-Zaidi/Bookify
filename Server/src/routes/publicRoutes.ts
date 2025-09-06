@@ -3,7 +3,7 @@ import { Router } from "express";
 // authentication controllers
 import refreshAccessToken from "../controllers/authentication/auth";
 import register from "../controllers/authentication/Register";
-import { logIn } from "../controllers/authentication/Login";
+import logIn from "../controllers/authentication/Login";
 import logout from "../controllers/authentication/Logout";
 import handleGoogleAuth from "../controllers/authentication/googleOAuth";
 // import logIn from "../";
@@ -19,7 +19,7 @@ public_routes.post("/register", register);
 public_routes.post("/login", logIn);
 public_routes.post("/logout", logout);
 
-//google oauht routes
+//google authentication routes
 
 public_routes.post("/refreshToken", refreshAccessToken);
 public_routes.post("/auth/google", handleGoogleAuth);

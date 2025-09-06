@@ -76,12 +76,12 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.availabilityBadge.available {
+.availabilityBadge .available {
   background-color: #28a745;
   color: white;
 }
 
-.availabilityBadge.unavailable {
+.availabilityBadge .unavailable {
   background-color: #dc3545;
   color: white;
 }
@@ -107,6 +107,12 @@
   line-height: 1.2;
   transition: color 0.3s ease;
 }
+
+/* .bookingSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+} */
 
 .roomCard:hover .roomName {
   color: var(--fourth-color);

@@ -4,9 +4,6 @@ import prisma from "../../prisma/prismaClient";
 async function getAllRooms(req: Request, res: Response, next: NextFunction) {
   try {
     const all_rooms = await prisma.room.findMany();
-
-    console.log(all_rooms);
-
     res.status(200).json({
       text: "rooms are loaded successfully",
       rooms: all_rooms,

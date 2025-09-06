@@ -2,15 +2,15 @@ import express from "express";
 import passport from "passport";
 import "./config/passport";
 
+// routes
 import public_routes from "./routes/publicRoutes";
+import auth_Routes from "./routes/authRoutes";
 
 import keys from "../src/config/keys";
 import cors from "cors";
-import "dotenv/config.js";
-
 import cookieParser from "cookie-parser";
-import auth_Routes from "./routes/authRoutes";
 import authMiddleware from "./Middlewares/authMiddlware";
+import "dotenv/config.js";
 
 const port = keys.port;
 const app = express();
@@ -30,6 +30,6 @@ app.use(passport.initialize());
 // routes
 
 app.use("/", public_routes);
-app.use("/auth", authMiddleware, auth_Routes);
+app.use("/api", authMiddleware, auth_Routes);
 
 app.listen(port, () => console.log("server is running in port : " + port));

@@ -16,7 +16,7 @@ async function addRoom(req: Request, res: Response) {
         name,
         description,
         price: parseFloat(price),
-        isAvailable: Boolean(isAvailable) ?? true,
+        isAvailable,
         Category,
       },
     });
