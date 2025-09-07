@@ -10,8 +10,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   async function login(credentials: { identifier: string; password: string }) {
     try {
       const response = await api.post("/login", credentials);
-      const { user } = response.data;
+      const { message, user } = response.data;
 
+      console.log(message, " ! ");
       setUser(user);
       setIsLoggedIn(true);
     } catch (error) {

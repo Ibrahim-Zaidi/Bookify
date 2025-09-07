@@ -1,82 +1,379 @@
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poetsen+One&display=swap");
 
+/* Main Container - Mobile First */
 .mainContainer {
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
-
+  background: linear-gradient(
+    135deg,
+    var(--main-color) 0%,
+    var(--secondary-color) 100%
+  );
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 1rem;
+  padding: 1rem;
+  position: relative;
 }
 
-.titleContainer h1 {
-  font-family: "poetsen One", sans-serif;
-  font-weight: 700;
-  font-size: 3rem;
-  /* justify-self: center;
-  align-self:cet ; */
-}
-
+/* Title Container */
 .titleContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.5rem;
   margin-bottom: 2rem;
-  width: 300px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
 }
 
-.registrationContainer h1 {
-  align-self: center;
-  font-size: 0.8rem;
-  margin: 0.4rem;
+.titleContainer h1 {
+  font-family: "Poetsen One", sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: var(--fifth-color);
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.titleContainer h3 {
+  font-size: 1rem;
+  color: var(--fourth-color);
+  margin: 0;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* Registration Container */
 .registrationContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid black;
-  width: 300px;
-  border: 3px 3px 3px black;
-  /* background-color: blue; */
-}
-
-.registrationContainer form {
+  background: white;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(218, 108, 108, 0.2);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.registrationContainer h1 {
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 0;
+  color: var(--fifth-color);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Form Styling */
+.registrationContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .registrationContainer form div {
-  display: grid;
-  grid-template-columns: 1fr 5fr;
-  gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
-  height: 2rem;
-  align-items: center;
-  justify-content: center;
 }
 
 .registrationContainer form div label {
-  /* border: 1px solid black; */
-  width: 4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fifth-color);
+  margin-bottom: 0.25rem;
 }
 
 .registrationContainer form div input {
-  border: 1px solid black;
-  width: 90%;
-  border-radius: 2px;
-}
-.btnContainer button {
-  /* padding: 0.5px 1px; */
-  border: 2px solid black;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background-color: #fafafa;
+  font-size: 1rem;
+  color: #333;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@media (min-width: 700px) {
+.registrationContainer form div input:focus {
+  outline: none;
+  border-color: var(--third-color);
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(218, 108, 108, 0.1);
+  transform: translateY(-1px);
+}
+
+.registrationContainer form div input:hover {
+  border-color: var(--fourth-color);
+  background-color: white;
+}
+
+.registrationContainer form div input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Button Container */
+.btnContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.btnContainer button {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.btnContainer button:first-child {
+  background: transparent;
+  color: var(--third-color);
+  border: 2px solid var(--third-color);
+}
+
+.btnContainer button:first-child:hover {
+  background: var(--third-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(218, 108, 108, 0.3);
+}
+
+.btnContainer button:last-child {
+  background: linear-gradient(
+    135deg,
+    var(--third-color) 0%,
+    var(--fourth-color) 100%
+  );
+  color: white;
+  box-shadow: 0 4px 15px rgba(218, 108, 108, 0.3);
+}
+
+.btnContainer button:last-child:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(218, 108, 108, 0.4);
+  background: linear-gradient(
+    135deg,
+    var(--fourth-color) 0%,
+    var(--third-color) 100%
+  );
+}
+
+.btnContainer button:active {
+  transform: translateY(0);
+}
+
+/* Google OAuth Button Container */
+.registrationContainer > div:last-child {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+  position: relative;
+}
+
+.registrationContainer > div:last-child::before {
+  content: "or";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 0 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Tablet Styles */
+@media (min-width: 768px) {
+  .mainContainer {
+    padding: 2rem;
+    justify-content: center;
+  }
+
+  .titleContainer {
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+
+  .titleContainer h1 {
+    font-size: 3rem;
+  }
+
+  .titleContainer h3 {
+    font-size: 1.2rem;
+  }
+
   .registrationContainer {
-    width: 450px;
+    max-width: 450px;
+    padding: 2.5rem;
+    gap: 2rem;
+  }
+
+  .registrationContainer h1 {
+    font-size: 1.3rem;
+  }
+
+  .registrationContainer form {
+    gap: 1.5rem;
+  }
+
+  .registrationContainer form div input {
+    padding: 1rem 1.25rem;
+    font-size: 1.05rem;
+  }
+
+  .btnContainer button {
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* Desktop Styles */
+@media (min-width: 1024px) {
+  .mainContainer {
+    padding: 3rem;
+  }
+
+  .titleContainer {
+    margin-bottom: 4rem;
+    max-width: 600px;
+  }
+
+  .titleContainer h1 {
+    font-size: 3.5rem;
+  }
+
+  .titleContainer h3 {
+    font-size: 1.3rem;
+  }
+
+  .registrationContainer {
+    max-width: 500px;
+    padding: 3rem;
+    gap: 2.5rem;
+  }
+
+  .registrationContainer h1 {
+    font-size: 1.4rem;
+  }
+
+  /* Two-column layout for larger screens */
+  .registrationContainer form {
+    gap: 2rem;
+  }
+
+  /* Enhanced hover effects for desktop */
+  .registrationContainer form div input:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  .registrationContainer {
+    max-width: 550px;
+  }
+}
+
+/* Loading State */
+.registrationContainer.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.registrationContainer.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 2px solid var(--third-color);
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error States */
+.registrationContainer form div input.error {
+  border-color: #e74c3c;
+  background-color: #fdf2f2;
+}
+
+.registrationContainer form div input.error:focus {
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.errorMessage {
+  color: #e74c3c;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Success States */
+.registrationContainer form div input.success {
+  border-color: #27ae60;
+  background-color: #f2f9f4;
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .registrationContainer form div input,
+  .btnContainer button {
+    transition: none;
+  }
+
+  .btnContainer button:hover,
+  .btnContainer button:last-child:hover {
+    transform: none;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.btnContainer button:focus-visible {
+  outline: 2px solid var(--third-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .registrationContainer {
+    border: 2px solid #000;
+  }
+
+  .registrationContainer form div input {
+    border-color: #000;
+  }
+
+  .btnContainer button:first-child {
+    border-color: #000;
+    color: #000;
   }
 }

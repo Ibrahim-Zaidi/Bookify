@@ -4,29 +4,41 @@ import Room1 from "../../assets/Room_welcome.jpg";
 import Room2 from "../../assets/Room2.jpg";
 
 import { useNavigate } from "react-router";
+import { useAuth } from "../../Contexts/AuthContext";
 
 function Welcoming() {
+  const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   return (
     <div className={Style.container}>
-      <div className={Style.navbar}>
+      <nav className={Style.navbar}>
         <div>
           <img src={logo} className={Style.logo} />
           <span className={Style.logoTitle}>ookify</span>
         </div>
         <div>
-          <button className={Style.loginBtn} onClick={() => navigate("/Login")}>
-            Login
-          </button>
-          <button
-            className={Style.registerBtn}
-            onClick={() => navigate("/Register")}
-          >
-            Register
-          </button>
+          {isLoggedIn ? (
+            // <h1>{user.username}</h1>
+            <h1>LOGGED IN! </h1>
+          ) : (
+            <>
+              <button
+                className={Style.loginBtn}
+                onClick={() => navigate("/Login")}
+              >
+                Login
+              </button>
+              <button
+                className={Style.registerBtn}
+                onClick={() => navigate("/Register")}
+              >
+                Register
+              </button>
+            </>
+          )}
         </div>
-      </div>
+      </nav>
       <div className={Style.welcomingContent}>
         <div className={Style.textContent}>
           <h1 className={Style.title}>

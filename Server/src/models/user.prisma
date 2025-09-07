@@ -10,6 +10,7 @@ model User {
   bookings Booking[]
   reviews Review[]
 }
+
 enum Role {
   ADMIN
   USER

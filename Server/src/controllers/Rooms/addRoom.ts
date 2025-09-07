@@ -5,7 +5,10 @@ import prisma from "../../prisma/prismaClient";
 
 async function addRoom(req: Request, res: Response) {
   try {
-    const { name, description, price, isAvailable, Category } = req.body;
+    const { name, description, price, isAvailable, Category, imageUrl } =
+      req.body;
+
+    console.log(req.body);
 
     if (!name || !price || !Category) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -18,6 +21,7 @@ async function addRoom(req: Request, res: Response) {
         price: parseFloat(price),
         isAvailable,
         Category,
+        imageUrl,
       },
     });
 
