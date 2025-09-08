@@ -3,8 +3,6 @@ import { useNavigate } from "react-router";
 import api from "../api/axios";
 import { useAuth } from "../Contexts/AuthContext";
 
-// import { jwtDecode } from "jwt-decode";
-
 function GoogleOAuthButton() {
   const navigate = useNavigate();
   const { user, setUser, isLoggedIn, setIsLoggedIn }: any = useAuth();
