@@ -5,26 +5,22 @@ interface RoomCardProps {
   id: number;
   name: string;
   imageUrl: string;
-  category: string;
+  Category: string;
   isAvailable: boolean;
-  description: string;
+
   price: number;
   rating: number;
 }
 
 function RoomCard({ room }: { room: RoomCardProps }) {
-  const {
-    id,
-    name,
-    imageUrl,
-    category,
-    isAvailable,
-    // description,
-    rating,
-    price,
-  } = room;
+  const { id, name, imageUrl, Category, isAvailable, rating, price } = room;
+  console.log(room);
 
   const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate(`/room/${id}`, { state: { room } });
+  };
 
   const renderStars = (rating: number) => {
     const fullStars = "★".repeat(rating);
@@ -33,16 +29,11 @@ function RoomCard({ room }: { room: RoomCardProps }) {
   };
 
   return (
-    <div
-      className={Style.roomCard}
-      onClick={() => {
-        navigate(`/room/${id}`);
-      }}
-    >
+    <div className={Style.roomCard} onClick={handleNavigate}>
       <div className={Style.roomImage}>
         <img src={imageUrl} alt={name} />
         <div className={Style.imageOverlay}>
-          <span className={Style.roomCategory}>{category}</span>
+          <span className={Style.roomCategory}>{Category}</span>
           <span
             className={`${Style.availabilityBadge} ${
               isAvailable ? Style.available : Style.unavailable
@@ -61,8 +52,6 @@ function RoomCard({ room }: { room: RoomCardProps }) {
             <span className={Style.ratingNumber}>({rating}.0)</span>
           </div>
         </div>
-
-        {/* <p className={Style.roomDescription}>{description}</p> */}
 
         <div className={Style.roomFooter}>
           <div className={Style.price}>

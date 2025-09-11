@@ -4,6 +4,7 @@ import passport from "passport";
 import { comparePasswords } from "../../utils/hash";
 import Jwt from "jsonwebtoken";
 import keys from "../../config/keys";
+import { Request, Response } from "express";
 
 passport.use(
   new LocalStrategy(
@@ -23,20 +24,21 @@ passport.use(
           },
         });
 
-        if (!user_) done(null, false, { message: "User not found" });
+        if (!user_) return done(null, false, { message: "User not found" });
 
         const isMatch = await comparePasswords(password, user_.password);
-        if (!isMatch) done(null, false, { message: "Invalid credentials" });
+        if (!isMatch)
+          return done(null, false, { message: "Invalid credentials" });
 
-        done(null, user_);
+        return done(null, user_);
       } catch (err) {
-        done(err);
+        return done(err);
       }
     }
   )
 );
 
-async function logIn(req: Request, res: Response): Promise<any> {
+async function logIn(req: Request, res: Response): Promise<void> {
   try {
     passport.authenticate(
       "local",
@@ -48,7 +50,7 @@ async function logIn(req: Request, res: Response): Promise<any> {
         if (!user) {
           return res
             .status(404)
-            .json({ message: "User not found. plase register" });
+            .json({ message: "User not found. Please register" });
         }
 
         const token = Jwt.sign(
@@ -68,7 +70,7 @@ async function logIn(req: Request, res: Response): Promise<any> {
       }
     )(req, res);
   } catch (err: any) {
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 }
 

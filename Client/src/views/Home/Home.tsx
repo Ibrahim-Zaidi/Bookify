@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useState } from "react";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
 import { useNavigate } from "react-router";
@@ -6,7 +6,6 @@ import RoomCard from "../Room/RoomCard";
 import Style from "./Home.module.css";
 import icon from "../../Assets/booking-reservation-icon.svg";
 
-// Define the initial state for the reducer
 const initialState = {
   selectedCategory: "all",
   selectedRating: "all",
@@ -16,8 +15,7 @@ const initialState = {
   error: null,
 };
 
-// Define the reducer function to handle state updates
-function reducer(state, action) {
+function reducer(state: typeof initialState, action: any) {
   switch (action.type) {
     case "SET_CATEGORY":
       return { ...state, selectedCategory: action.payload };
@@ -37,9 +35,19 @@ function reducer(state, action) {
 }
 
 function Home() {
-  const { isLoggedIn, user } = useAuth();
-  const navigate = useNavigate();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { isLoggedIn, user } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    selectedCategory,
+    selectedRating,
+    rooms,
+    searchName,
+    isLoading,
+    error,
+  } = state;
 
   useEffect(() => {
     async function getRooms() {
@@ -47,9 +55,10 @@ function Home() {
       try {
         const data = await api.get("/getAllRooms");
         const { rooms } = data.data;
+        console.log(rooms);
         dispatch({ type: "SET_ROOMS", payload: rooms });
       } catch (err) {
-        dispatch({ type: "SET_ERROR", payload: "Failed to load rooms" });
+        dispatch({ type: "SET_ERROR", payload: "failed to load rooms" });
       } finally {
         dispatch({ type: "SET_LOADING", payload: false });
       }
@@ -57,27 +66,42 @@ function Home() {
     getRooms();
   }, []);
 
-  const handleCategoryChange = (e: any) => {
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({ type: "SET_CATEGORY", payload: e.target.value });
   };
 
-  const handleRatingChange = (e: any) => {
+  const handleRatingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({ type: "SET_RATING", payload: e.target.value });
   };
 
-  const handleSearchChange = (e: any) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch({ type: "SET_SEARCH_NAME", payload: e.target.value });
   };
-  const filteredRooms = state.rooms.filter((room: any) => {
+
+  const filteredRooms = rooms.filter((room: any) => {
     const matchesCategory =
-      state.selectedCategory === "all" ||
-      room.Category.toLowerCase() === state.selectedCategory.toLowerCase();
+      selectedCategory === "all" ||
+      room.Category.toLowerCase() === selectedCategory.toLowerCase();
     const matchesRating =
-      state.selectedRating === "all" ||
-      room.rating >= parseInt(state.selectedRating);
+      selectedRating === "all" || room.rating >= parseInt(selectedRating);
 
     return matchesCategory && matchesRating;
   });
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "60vh",
+        }}
+      >
+        <div>Loading rooms...</div>
+      </div>
+    );
+  }
 
   return (
     <div className={Style.container}>
@@ -88,25 +112,50 @@ function Home() {
             <>
               <img
                 src={icon}
-                alt="icon_booking"
+                alt="My Bookings"
                 onClick={() => navigate("/Bookings")}
+                className={Style.bookingsIcon}
+                title="View My Bookings"
               />
-              <select className={Style.filterLogged}>
-                <option value="profile" className={Style.welcomeBar}>
+
+              <div className={Style.userMenuContainer}>
+                <button
+                  className={Style.userMenuButton}
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                >
                   Hi, {user.username}!
-                </option>
-                <option value="logout">Log Out</option>
-              </select>
+                  <span className={Style.dropdownArrow}>▼</span>
+                </button>
+
+                {isMenuOpen && (
+                  <div className={Style.dropdownMenu}>
+                    <button
+                      onClick={() => {
+                        navigate("/login");
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
-            <select className={Style.filterRegister}>
-              <option value="Register" onChange={() => navigate("/Register")}>
-                Register
-              </option>
-              <option value="Login" onChange={() => navigate("/Login")}>
+            <div className={Style.authButtons}>
+              <button
+                className={Style.loginButton}
+                onClick={() => navigate("/Login")}
+              >
                 Login
-              </option>
-            </select>
+              </button>
+              <button
+                className={Style.registerButton}
+                onClick={() => navigate("/Register")}
+              >
+                Register
+              </button>
+            </div>
           )}
         </div>
       </nav>
@@ -121,7 +170,7 @@ function Home() {
           <input
             type="text"
             placeholder="Search by room name..."
-            value={state.searchName}
+            value={searchName}
             onChange={handleSearchChange}
             className={Style.searchInput}
           />
@@ -132,7 +181,7 @@ function Home() {
           <div className={Style.filterGroup}>
             <label>Category</label>
             <select
-              value={state.selectedCategory}
+              value={selectedCategory}
               onChange={handleCategoryChange}
               className={Style.filterSelect}
             >
@@ -146,7 +195,7 @@ function Home() {
           <div className={Style.filterGroup}>
             <label>Minimum Rating</label>
             <select
-              value={state.selectedRating}
+              value={selectedRating}
               onChange={handleRatingChange}
               className={Style.filterSelect}
             >

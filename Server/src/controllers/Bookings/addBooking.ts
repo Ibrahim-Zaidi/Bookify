@@ -3,11 +3,16 @@ import prisma from "../../prisma/prismaClient";
 
 async function addBooking(req: Request, res: Response) {
   const { roomId, totalPrice, startTime, endTime } = req.body;
-  const userId = req.user.id;
+
+  // we get the user id from the middlware that adds the user to the request object, unlike the room id which is sent in the body
+
+  const userId = req?.user.id;
 
   try {
-    // Convert types
+    // converting types , because the values in the body are string typed
+
     const roomIdInt = parseInt(roomId);
+
     const bookingData = {
       userId: parseInt(userId),
       roomId: roomIdInt,
@@ -16,7 +21,6 @@ async function addBooking(req: Request, res: Response) {
       endTime: new Date(endTime),
     };
 
-    // Check if room exists and is available
     const room = await prisma.room.findUnique({
       where: { id: roomIdInt },
     });
@@ -33,7 +37,8 @@ async function addBooking(req: Request, res: Response) {
       });
     }
 
-    // Create booking and update room availability in a transaction
+    // -we use transaction so we can make two queries at once
+
     const result = await prisma.$transaction([
       prisma.booking.create({
         data: bookingData,
@@ -50,9 +55,9 @@ async function addBooking(req: Request, res: Response) {
       message: "Booking created successfully",
       booking: newBooking,
       room: updatedRoom,
+      userId: userId,
     });
   } catch (error) {
-    console.error("Booking creation error:", error);
     res.status(500).json({
       message: "Booking creation failed",
       error: error.message,

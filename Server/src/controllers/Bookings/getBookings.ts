@@ -16,7 +16,9 @@ async function getBookings(req: Request, res: Response) {
       user: req.user,
     });
   } catch (err) {
-    console.log(err);
+    res
+      .status(500)
+      .json({ message: "Failed to retrieve bookings", error: err });
   }
 }
 

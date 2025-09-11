@@ -2,10 +2,8 @@ import React, { useReducer } from "react";
 import styles from "./Register.module.css";
 import { useNavigate } from "react-router";
 import api from "../../api/axios.ts";
-// import { useAuth } from "../Contexts/AuthContext.tsx";
 import GoogleOAuthButton from "../../features/GoogleOAuthButton.tsx";
 import { useAuth } from "../../Contexts/AuthContext.tsx";
-// import "dotenv/config";
 
 type RegisterState = {
   email: string;
@@ -15,9 +13,6 @@ type RegisterState = {
   username: string;
   number: string;
 };
-
-// all the Inputs are string typed, so that made it easy
-// to type-group them all into this common action
 
 type RegisterAction = {
   type: "SET_FIELD";
@@ -70,21 +65,36 @@ function Register() {
       const res = await api.post("/register", state);
       console.log(res);
 
+      // Show success message and redirect to login
+      alert("Registration successful! Please log in with your new account.");
       navigate("/login");
     } catch (err) {
       console.log(err);
+      alert("Registration failed. Please try again.");
     }
+  };
+
+  // Navigation functions
+  const handleLoginClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent form submission
+    navigate("/login");
+  };
+
+  const handleBookifyClick = () => {
+    navigate("/"); // Navigate to welcoming page (index route)
   };
 
   return (
     <main className={styles.mainContainer}>
       <div className={styles.titleContainer}>
-        <h1>Bookify</h1>
+        <h1 onClick={handleBookifyClick} className={styles.clickableTitle}>
+          Bookify
+        </h1>
         <h3>your best bet for quality bookings</h3>
       </div>
 
       <div className={styles.registrationContainer}>
-        <h1>Register now, it iss quick and easy 😉</h1>
+        <h1>Register now, it is quick and easy 😉</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="firstName">First Name:</label>
@@ -94,6 +104,7 @@ function Register() {
               name="firstName"
               value={state.firstName}
               onChange={handleInputChange}
+              placeholder="Enter your first name"
               required
             />
           </div>
@@ -105,6 +116,7 @@ function Register() {
               name="lastName"
               value={state.lastName}
               onChange={handleInputChange}
+              placeholder="Enter your last name"
               required
             />
           </div>
@@ -116,17 +128,19 @@ function Register() {
               name="username"
               value={state.username}
               onChange={handleInputChange}
+              placeholder="Choose a username"
               required
             />
           </div>
           <div>
-            <label htmlFor="number">Number:</label>
+            <label htmlFor="number">Phone Number:</label>
             <input
-              type="text"
+              type="tel"
               id="number"
               name="number"
               value={state.number}
               onChange={handleInputChange}
+              placeholder="Enter your phone number"
               required
             />
           </div>
@@ -138,6 +152,7 @@ function Register() {
               name="email"
               value={state.email}
               onChange={handleInputChange}
+              placeholder="Enter your email address"
               required
             />
           </div>
@@ -149,12 +164,15 @@ function Register() {
               name="password"
               value={state.password}
               onChange={handleInputChange}
+              placeholder="Create a strong password"
               required
             />
           </div>
           <div className={styles.btnContainer}>
-            <button>log In</button>
-            <button>Submit</button>
+            <button type="submit">Register</button>
+            <button type="button" onClick={handleLoginClick}>
+              go to login
+            </button>
           </div>
         </form>
         <div>

@@ -5,7 +5,7 @@ import { useAuth } from "../Contexts/AuthContext";
 
 function GoogleOAuthButton() {
   const navigate = useNavigate();
-  const { user, setUser, isLoggedIn, setIsLoggedIn }: any = useAuth();
+  const { user, setUser, setIsLoggedIn }: any = useAuth();
 
   async function handleLoginSuccess(response: any) {
     try {
@@ -18,7 +18,7 @@ function GoogleOAuthButton() {
 
       if (sentResult) {
         setIsLoggedIn(true);
-        setUser(sentResult.data);
+        setUser(sentResult.data.user);
         navigate("/Home");
       } else throw new Error("Google authentication failed");
     } catch (err) {

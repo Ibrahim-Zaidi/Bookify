@@ -38,7 +38,7 @@ const Login = () => {
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.inputField}>
-            <label htmlFor="identifier">Username / Email</label>
+            <label htmlFor="identifier">Username / Email / Number</label>
             <input
               type="text"
               id="identifier"
@@ -69,6 +69,19 @@ const Login = () => {
         </form>
 
         <GoogleOAuthButton />
+
+        <div className={styles.loginOptions}>
+          <div className={styles.registerPrompt}>
+            <span>Don't have an account? </span>
+            <button
+              onClick={() => navigate("/Register")}
+              className={styles.registerButton}
+              type="button"
+            >
+              Sign Up
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

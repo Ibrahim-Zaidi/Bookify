@@ -25,6 +25,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     isLoggedIn,
     login,
+    setIsLoggedIn,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

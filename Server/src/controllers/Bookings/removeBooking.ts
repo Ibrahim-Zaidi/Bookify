@@ -5,9 +5,23 @@ async function removeBooking(req: Request, res: Response) {
   const { id } = req.params;
 
   try {
-    const deletedBooking = await prisma.booking.delete({
-      where: { id: parseInt(id) },
-    });
+    // We use a transaction to delete the booking and update the room's availability
+
+    const deletedBooking = await prisma.booking.$transaction([
+      prisma.booking.delete({
+        where: {
+          id: parseInt(id),
+        },
+      }),
+      prisma.room.update({
+        where: {
+          id: parseInt(id),
+        },
+        data: {
+          isAvailable: true,
+        },
+      }),
+    ]);
 
     res.status(200).json({
       message: "Booking deleted successfully",

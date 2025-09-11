@@ -13,7 +13,6 @@ const public_routes = Router();
 
 public_routes.post("/register", register);
 public_routes.post("/login", logIn);
-public_routes.post("/logout", logout);
 
 // route for refreshing access token
 

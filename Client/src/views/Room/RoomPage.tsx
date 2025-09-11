@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useReducer } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
-import styles from "./RoomPage.module.css"; // Import the CSS module
+import styles from "./RoomPage.module.css";
 
 interface Room {
   id: number;
@@ -14,59 +14,103 @@ interface Room {
   imageUrl: string;
 }
 
+// Define the state shape
+interface RoomPageState {
+  checkInDate: string;
+  checkOutDate: string;
+  numberOfDays: number;
+  totalPrice: number;
+  isBooking: boolean;
+  showReviewForm: boolean;
+  rating: number;
+  reviewText: string;
+}
+
+// Initial state
+const initialState: RoomPageState = {
+  checkInDate: "",
+  checkOutDate: "",
+  numberOfDays: 0,
+  totalPrice: 0,
+  isBooking: false,
+  showReviewForm: false,
+  rating: 5,
+  reviewText: "",
+};
+
+// Action types
+type RoomPageAction =
+  | { type: "SET_CHECK_IN_DATE"; payload: string }
+  | { type: "SET_CHECK_OUT_DATE"; payload: string }
+  | { type: "SET_NUMBER_OF_DAYS"; payload: number }
+  | { type: "SET_TOTAL_PRICE"; payload: number }
+  | { type: "SET_IS_BOOKING"; payload: boolean }
+  | { type: "TOGGLE_REVIEW_FORM" }
+  | { type: "SET_RATING"; payload: number }
+  | { type: "SET_REVIEW_TEXT"; payload: string }
+  | { type: "RESET_REVIEW_FORM" }
+  | { type: "CALCULATE_STAY"; payload: { days: number; price: number } };
+
+// Reducer function
+function reducer(state: RoomPageState, action: RoomPageAction): RoomPageState {
+  switch (action.type) {
+    case "SET_CHECK_IN_DATE":
+      return { ...state, checkInDate: action.payload };
+    case "SET_CHECK_OUT_DATE":
+      return { ...state, checkOutDate: action.payload };
+    case "SET_NUMBER_OF_DAYS":
+      return { ...state, numberOfDays: action.payload };
+    case "SET_TOTAL_PRICE":
+      return { ...state, totalPrice: action.payload };
+    case "SET_IS_BOOKING":
+      return { ...state, isBooking: action.payload };
+    case "TOGGLE_REVIEW_FORM":
+      return { ...state, showReviewForm: !state.showReviewForm };
+    case "SET_RATING":
+      return { ...state, rating: action.payload };
+    case "SET_REVIEW_TEXT":
+      return { ...state, reviewText: action.payload };
+    case "RESET_REVIEW_FORM":
+      return {
+        ...state,
+        showReviewForm: false,
+        rating: 5,
+        reviewText: "",
+      };
+    case "CALCULATE_STAY":
+      return {
+        ...state,
+        numberOfDays: action.payload.days,
+        totalPrice: action.payload.days * action.payload.price,
+      };
+    default:
+      return state;
+  }
+}
+
 function RoomPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
+  const location = useLocation();
 
-  const [room, setRoom] = useState<Room | null>(null);
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  const [numberOfDays, setNumberOfDays] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [isBooking, setIsBooking] = useState(false);
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [rating, setRating] = useState(5);
-  const [reviewText, setReviewText] = useState("");
+  // Keep room state separate
+  const [room, setRoom] = useState<Room | null>(location.state?.room || null);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  // {
-  //   "id": 9,
-  // "name": "Double Room with Balcony",
-  // "description": "Two twin beds with a private balcony, perfect for a relaxing getaway.",
-  // "price": 160,
-  // "isAvailable": true,
-  // "Category": "Double",
-  // "imageUrl": null
-  // }
-
-  //   model Booking {
-  //   id Int @id @default(autoincrement())
-  //   userId Int
-  //   roomId Int
-  //   totalPrice Float
-  //   startTime DateTime
-  //   endTime DateTime
-  //   user User @relation(fields : [userId] , references : [id])
-  //   room Room @relation(fields : [roomId] , references : [id])
-  // }
+  const {
+    checkInDate,
+    checkOutDate,
+    numberOfDays,
+    totalPrice,
+    isBooking,
+    showReviewForm,
+    rating,
+    reviewText,
+  } = state;
 
   useEffect(() => {
-    const mockRoom = {
-      id: Number(id),
-      name: "Double Garden View",
-      description:
-        "Experience luxury and comfort in our spacious Double Garden View room. This elegantly appointed accommodation features a plush king-size bed, modern amenities, and stunning views of our landscaped gardens. Perfect for business travelers or couples seeking a peaceful retreat.",
-      price: 229,
-      isAvailable: true,
-      category: "double",
-      imageUrl:
-        "https://fastly.picsum.photos/id/10/2500/1667.jpg?hmac=J04WWC_ebchx3WwzbM-Z4_KC_LeLBWr5LZMaAkWkF68",
-    };
-    setRoom(mockRoom);
-  }, [id]);
-
-  useEffect(() => {
-    if (checkInDate && checkOutDate) {
+    if (checkInDate && checkOutDate && room) {
       const start = new Date(checkInDate);
       const end = new Date(checkOutDate);
       const days = Math.ceil(
@@ -74,17 +118,19 @@ function RoomPage() {
       );
 
       if (days > 0) {
-        setNumberOfDays(days);
-        setTotalPrice(days * (room?.price || 0));
+        dispatch({
+          type: "CALCULATE_STAY",
+          payload: { days, price: room.price },
+        });
       } else {
-        setNumberOfDays(0);
-        setTotalPrice(0);
+        dispatch({ type: "CALCULATE_STAY", payload: { days: 0, price: 0 } });
       }
     }
   }, [checkInDate, checkOutDate, room]);
 
-  const handleBooking = async () => {
+  async function handleBooking() {
     if (!isLoggedIn) {
+      alert("Please log in to book a room");
       navigate("/login");
       return;
     }
@@ -94,7 +140,7 @@ function RoomPage() {
       return;
     }
 
-    setIsBooking(true);
+    dispatch({ type: "SET_IS_BOOKING", payload: true });
     try {
       const bookingData = {
         roomId: room?.id,
@@ -103,18 +149,18 @@ function RoomPage() {
         totalPrice: totalPrice,
       };
 
-      await api.post("/auth/addBooking", bookingData);
-      alert("Booking successful!");
-      navigate("/Home");
+      console.log("Booking data:", bookingData);
+      const apiData = await api.post("/auth/addBooking", bookingData);
+      console.log("Booking successful:", apiData);
+      // navigate("/Home");
     } catch (error) {
       console.error("Booking failed:", error);
-      alert("Booking failed. Please try again.");
     } finally {
-      setIsBooking(false);
+      dispatch({ type: "SET_IS_BOOKING", payload: false });
     }
-  };
+  }
 
-  const handleReviewSubmit = async () => {
+  async function handleReviewSubmit() {
     if (!isLoggedIn) {
       navigate("/login");
       return;
@@ -126,24 +172,20 @@ function RoomPage() {
         rating: rating,
         description: reviewText,
       });
-      alert("Review submitted successfully!");
-      setShowReviewForm(false);
-      setReviewText("");
-      setRating(5);
+
+      dispatch({ type: "RESET_REVIEW_FORM" });
     } catch (error) {
       console.error("Failed to submit review:", error);
-      alert("Failed to submit review. Please try again.");
     }
-  };
+  }
 
   const getMinDate = () => {
     const today = new Date();
-    console.log(today);
     return today.toISOString().split("T")[0];
   };
 
   if (!room) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <div className={styles.loading}>Loading room details...</div>;
   }
 
   return (
@@ -159,7 +201,7 @@ function RoomPage() {
       {/* Room Details */}
       <div className={styles.roomDetails}>
         <div className={styles.roomImage}>
-          <img src={room.imageUrl} alt={room.name} />
+          {room.imageUrl && <img src={room.imageUrl} alt={room.name} />}
         </div>
 
         <div className={styles.roomInfo}>
@@ -196,10 +238,12 @@ function RoomPage() {
                 type="date"
                 min={getMinDate()}
                 value={checkInDate}
-                onChange={(e) => {
-                  setCheckInDate(e.target.value);
-                  console.log(checkInDate);
-                }}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_CHECK_IN_DATE",
+                    payload: e.target.value,
+                  })
+                }
                 disabled={!room.isAvailable}
               />
             </div>
@@ -209,7 +253,12 @@ function RoomPage() {
                 type="date"
                 min={checkInDate || getMinDate()}
                 value={checkOutDate}
-                onChange={(e) => setCheckOutDate(e.target.value)}
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_CHECK_OUT_DATE",
+                    payload: e.target.value,
+                  })
+                }
                 disabled={!room.isAvailable || !checkInDate}
               />
             </div>
@@ -233,10 +282,10 @@ function RoomPage() {
         <div className={styles.reviewsSection}>
           <h3>Reviews</h3>
           <button
-            onClick={() => setShowReviewForm(!showReviewForm)}
+            onClick={() => dispatch({ type: "TOGGLE_REVIEW_FORM" })}
             className={styles.reviewButton}
           >
-            Write a Review
+            {showReviewForm ? "Cancel" : "Write a Review"}
           </button>
           {showReviewForm && (
             <div className={styles.reviewForm}>
@@ -245,7 +294,12 @@ function RoomPage() {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
                     key={star}
-                    onClick={() => setRating(star)}
+                    onClick={() =>
+                      dispatch({
+                        type: "SET_RATING",
+                        payload: star,
+                      })
+                    }
                     className={
                       star <= rating ? styles.activeStar : styles.inactiveStar
                     }
@@ -256,8 +310,13 @@ function RoomPage() {
               </div>
               <textarea
                 value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                placeholder="Share your experience..."
+                onChange={(e) =>
+                  dispatch({
+                    type: "SET_REVIEW_TEXT",
+                    payload: e.target.value,
+                  })
+                }
+                placeholder="Write your review here..."
               />
               <button
                 onClick={handleReviewSubmit}
