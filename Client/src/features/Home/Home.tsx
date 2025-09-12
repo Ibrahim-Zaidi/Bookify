@@ -55,7 +55,6 @@ function Home() {
       try {
         const data = await api.get("/getAllRooms");
         const { rooms } = data.data;
-        console.log(rooms);
         dispatch({ type: "SET_ROOMS", payload: rooms });
       } catch (err) {
         dispatch({ type: "SET_ERROR", payload: "failed to load rooms" });
@@ -66,28 +65,39 @@ function Home() {
     getRooms();
   }, []);
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  function handleCategoryChange(e: React.ChangeEvent<HTMLSelectElement>) {
     dispatch({ type: "SET_CATEGORY", payload: e.target.value });
-  };
+  }
 
-  const handleRatingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  function handleRatingChange(e: React.ChangeEvent<HTMLSelectElement>) {
     dispatch({ type: "SET_RATING", payload: e.target.value });
-  };
+  }
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handleSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
     dispatch({ type: "SET_SEARCH_NAME", payload: e.target.value });
-  };
+  }
 
   const filteredRooms = rooms.filter((room: any) => {
+    // First check if room is available
+    if (!room.isAvailable) return false;
+
+    // Check category filter
     const matchesCategory =
       selectedCategory === "all" ||
       room.Category.toLowerCase() === selectedCategory.toLowerCase();
+
+    // Check rating filter
     const matchesRating =
-      selectedRating === "all" || room.rating >= parseInt(selectedRating);
+      selectedRating === "all" ||
+      (room.rating && room.rating >= parseInt(selectedRating));
 
-    return matchesCategory && matchesRating;
+    // Check search filter
+    const matchesSearch =
+      searchName === "" ||
+      room.name.toLowerCase().includes(searchName.toLowerCase());
+
+    return matchesCategory && matchesRating && matchesSearch;
   });
-
   if (isLoading) {
     return (
       <div

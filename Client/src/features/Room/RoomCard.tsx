@@ -49,7 +49,9 @@ function RoomCard({ room }: { room: RoomCardProps }) {
           <h4 className={Style.roomName}>{name}</h4>
           <div className={Style.roomRating}>
             <span className={Style.stars}>{renderStars(rating)}</span>
-            <span className={Style.ratingNumber}>({rating}.0)</span>
+            <span className={Style.ratingNumber}>
+              {rating ? `(${rating}.0)` : "No Rating yet"}
+            </span>
           </div>
         </div>
 

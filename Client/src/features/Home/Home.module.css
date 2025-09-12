@@ -1,10 +1,10 @@
 /* Enhanced Search Section Styles - Mobile First */
 
-.container {
+/* .container {
   width: 100%;
   min-height: 100vh;
   background-color: var(--main-color);
-}
+} */
 
 nav {
   width: 100%;
@@ -62,6 +62,11 @@ h1 {
 .userMenuContainer {
   position: relative;
   display: inline-block;
+}
+
+.resultsHeader {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .userMenuButton {

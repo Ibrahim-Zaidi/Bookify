@@ -19,11 +19,7 @@ async function handleGoogleAuth(req: Request, res: Response): Promise<any> {
       audience: keys.google.clientId,
     });
 
-    console.log("ticket =>", ticket);
-
     const payload = ticket.getPayload();
-
-    console.log("payload => ", payload);
 
     if (!payload) {
       return res.status(404).json({ message: "Invalid token payload" });

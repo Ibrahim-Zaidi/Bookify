@@ -1,8 +1,7 @@
 import React, { useReducer } from "react";
 import styles from "./Register.module.css";
 import { useNavigate } from "react-router";
-import api from "../../api/axios.ts";
-import GoogleOAuthButton from "../../features/GoogleOAuthButton.tsx";
+import GoogleOAuthButton from "../../ui/GoogleOAuthButton.tsx";
 import { useAuth } from "../../Contexts/AuthContext.tsx";
 
 type RegisterState = {
@@ -47,7 +46,7 @@ function registerReducer(
 function Register() {
   const [state, dispatch] = useReducer(registerReducer, initialValues);
   const navigate = useNavigate();
-  const { user, SetUser, isLoggedIn, setIsLoggedIn } = useAuth();
+  const { register } = useAuth();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -62,11 +61,9 @@ function Register() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await api.post("/register", state);
-      console.log(res);
+      await register(state);
+      console.log("Registration successful!");
 
-      // Show success message and redirect to login
-      alert("Registration successful! Please log in with your new account.");
       navigate("/login");
     } catch (err) {
       console.log(err);
@@ -74,14 +71,13 @@ function Register() {
     }
   };
 
-  // Navigation functions
   const handleLoginClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Prevent form submission
+    e.preventDefault();
     navigate("/login");
   };
 
   const handleBookifyClick = () => {
-    navigate("/"); // Navigate to welcoming page (index route)
+    navigate("/");
   };
 
   return (

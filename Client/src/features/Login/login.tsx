@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Contexts/AuthContext";
 import styles from "./login.module.css";
-import GoogleOAuthButton from "../../features/GoogleOAuthButton";
+import GoogleOAuthButton from "../../ui/GoogleOAuthButton";
 
 const Login = () => {
   const navigate = useNavigate();

@@ -9,19 +9,12 @@ function GoogleOAuthButton() {
 
   async function handleLoginSuccess(response: any) {
     try {
-      console.log(response);
-
       const payload = response.credential;
-
-      console.log(payload);
-
       const sentResult = await api.post("/auth/google", { idToken: payload });
 
-      console.log(sentResult.data);
-
       if (sentResult) {
-        setIsLoggedIn(true);
         setUser(sentResult.data.user);
+        setIsLoggedIn(true);
         navigate("/Home");
       } else throw new Error("Google authentication failed");
     } catch (err) {
