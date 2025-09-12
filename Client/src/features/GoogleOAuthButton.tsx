@@ -5,13 +5,16 @@ import { useAuth } from "../Contexts/AuthContext";
 
 function GoogleOAuthButton() {
   const navigate = useNavigate();
-  const { user, setUser, setIsLoggedIn }: any = useAuth();
+  const { setUser, setIsLoggedIn } = useAuth();
 
   async function handleLoginSuccess(response: any) {
     try {
       console.log(response);
 
       const payload = response.credential;
+
+      console.log(payload);
+
       const sentResult = await api.post("/auth/google", { idToken: payload });
 
       console.log(sentResult.data);

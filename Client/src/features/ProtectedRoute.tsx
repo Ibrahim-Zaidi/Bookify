@@ -1,19 +1,14 @@
-import { useEffect } from "react";
 import { useAuth } from "../Contexts/AuthContext";
-import { useNavigate } from "react-router";
+import { Navigate } from "react-router-dom";
 
-function ProtectedRoute() {
-  const { isLoggedIn, user } = useAuth();
-  const navigate = useNavigate();
+function ProtectedRoute({ children }: { children: JSX.Element }) {
+  const { isLoggedIn } = useAuth();
 
-  useEffect(
-    function () {
-      if (!isLoggedIn) navigate("/Home");
-    },
-    [isLoggedIn, navigate]
-  );
+  if (!isLoggedIn) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return isLoggedIn ? <div>this is a protectedRoute</div> : null;
+  return children;
 }
 
 export default ProtectedRoute;

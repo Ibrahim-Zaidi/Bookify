@@ -38,7 +38,6 @@ const initialState: RoomPageState = {
   reviewText: "",
 };
 
-// Action types
 type RoomPageAction =
   | { type: "SET_CHECK_IN_DATE"; payload: string }
   | { type: "SET_CHECK_OUT_DATE"; payload: string }
@@ -51,7 +50,6 @@ type RoomPageAction =
   | { type: "RESET_REVIEW_FORM" }
   | { type: "CALCULATE_STAY"; payload: { days: number; price: number } };
 
-// Reducer function
 function reducer(state: RoomPageState, action: RoomPageAction): RoomPageState {
   switch (action.type) {
     case "SET_CHECK_IN_DATE":
@@ -94,7 +92,6 @@ function RoomPage() {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
 
-  // Keep room state separate
   const [room, setRoom] = useState<Room | null>(location.state?.room || null);
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -113,6 +110,7 @@ function RoomPage() {
     if (checkInDate && checkOutDate && room) {
       const start = new Date(checkInDate);
       const end = new Date(checkOutDate);
+      console.log(start, end);
       const days = Math.ceil(
         (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
       );
@@ -130,13 +128,13 @@ function RoomPage() {
 
   async function handleBooking() {
     if (!isLoggedIn) {
-      alert("Please log in to book a room");
+      console.log("Not logged in, redirecting to login");
       navigate("/login");
       return;
     }
 
     if (!checkInDate || !checkOutDate || numberOfDays <= 0) {
-      alert("Please select valid check-in and check-out dates");
+      console.log("Invalid dates selected");
       return;
     }
 
@@ -148,11 +146,12 @@ function RoomPage() {
         endTime: checkOutDate,
         totalPrice: totalPrice,
       };
-
       console.log("Booking data:", bookingData);
-      const apiData = await api.post("/auth/addBooking", bookingData);
+
+      const apiData = await api.post("/api/addBooking", bookingData);
+
       console.log("Booking successful:", apiData);
-      // navigate("/Home");
+      navigate("/Bookings");
     } catch (error) {
       console.error("Booking failed:", error);
     } finally {

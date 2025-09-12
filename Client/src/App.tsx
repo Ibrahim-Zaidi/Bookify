@@ -6,8 +6,8 @@ import { lazy } from "react";
 import Home from "./views/Home/Home.tsx";
 import Welcoming from "./views/Welcome/Welcoming.tsx";
 import RoomPage from "./views/Room/RoomPage.tsx";
-import userBookings from "./views/Bookings/userBookings.tsx";
 import ProtectedRoute from "./features/ProtectedRoute.tsx";
+import UserBookings from "./views/Bookings/userBookings.tsx";
 
 const Login = lazy(() => import("./views/Login/login.tsx"));
 const Register = lazy(() => import("./views/Register/Register.tsx"));
@@ -26,7 +26,7 @@ function App() {
             path="Bookings"
             element={
               <ProtectedRoute>
-                <userBookings />
+                <UserBookings />
               </ProtectedRoute>
             }
           />

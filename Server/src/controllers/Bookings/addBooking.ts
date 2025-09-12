@@ -4,7 +4,10 @@ import prisma from "../../prisma/prismaClient";
 async function addBooking(req: Request, res: Response) {
   const { roomId, totalPrice, startTime, endTime } = req.body;
 
-  // we get the user id from the middlware that adds the user to the request object, unlike the room id which is sent in the body
+  // we get the user id from the middlware that adds the user to the request object,
+  // unlike the room id which gets sent in the body
+
+  console.log(req.user);
 
   const userId = req?.user.id;
 
@@ -20,6 +23,8 @@ async function addBooking(req: Request, res: Response) {
       startTime: new Date(startTime),
       endTime: new Date(endTime),
     };
+
+    console.log(bookingData);
 
     const room = await prisma.room.findUnique({
       where: { id: roomIdInt },

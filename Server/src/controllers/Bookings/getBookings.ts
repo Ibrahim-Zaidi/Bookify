@@ -9,6 +9,20 @@ async function getBookings(req: Request, res: Response) {
       where: {
         userId,
       },
+      include: {
+        room: {
+          select: {
+            id: true,
+            name: true,
+            Category: true,
+            imageUrl: true,
+            price: true,
+          },
+        },
+      },
+      orderBy: {
+        startTime: "desc",
+      },
     });
 
     res.status(200).json({

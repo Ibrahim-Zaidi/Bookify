@@ -9,6 +9,9 @@ const authMiddleware = async (
   next: NextFunction
 ) => {
   const token = req.cookies.token;
+
+  console.log("_________________________________ : ", token);
+
   if (!token) {
     return res.status(401).json({
       message: "No token provided, please log in.",
@@ -17,14 +20,17 @@ const authMiddleware = async (
 
   try {
     const decoded = jwt.verify(token, keys.jwtToken);
+    const userIdentifier = decoded.userId || decoded.id;
 
-    console.log(decoded);
+    console.log("decoded : ", decoded);
 
     const user = await prisma.user.findUnique({
       where: {
-        id: decoded.id,
+        id: userIdentifier,
       },
     });
+
+    console.log("User from DB: ", user);
 
     if (!user) {
       return res.status(401).json({ message: "User not registered." });
@@ -33,6 +39,8 @@ const authMiddleware = async (
     req.user = user;
     next();
   } catch (error) {
+    console.log("Token verification error: ", error);
+
     return res.status(403).json({ message: "Invalid or expired token." });
   }
 };
