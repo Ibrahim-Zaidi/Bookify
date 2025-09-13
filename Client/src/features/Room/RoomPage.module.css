@@ -45,7 +45,6 @@
   color: var(--primary-color);
 }
 
-/* Room Details Section */
 .roomDetails {
   display: flex;
   flex-direction: column;
@@ -170,7 +169,6 @@ input[type="date"] {
   background-color: var(--button-hover-color);
 }
 
-/* Reviews Section */
 .reviewsSection {
   margin-top: 20px;
   background-color: var(--accent-color);
@@ -227,7 +225,6 @@ input[type="date"] {
   flex-direction: column;
 }
 
-/* Mobile Specific Adjustments */
 @media (min-width: 480px) {
   .roomImage {
     align-self: center;
@@ -277,7 +274,6 @@ input[type="date"] {
 @media (min-width: 768px) {
   .roomDetails {
     flex-direction: row;
-    /* gap: 10rem; */
   }
 
   .roomImage img {
@@ -285,9 +281,8 @@ input[type="date"] {
   }
 
   .roomInfo {
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
-    /* flex: 1; */
     justify-content: center;
   }
 
@@ -316,7 +311,12 @@ input[type="date"] {
     font-size: 3rem;
   }
 
+  .roomPrice {
+    font-size: 2rem;
+  }
+
   .roomDetails .roomDescription {
     font-size: 1rem;
+    font-weight: 500;
   }
 }

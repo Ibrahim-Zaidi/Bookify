@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import RoomCard from "../Room/RoomCard";
 import Style from "./Home.module.css";
 import icon from "../../Assets/booking-reservation-icon.svg";
+import Spinner from "../../ui/spinner";
 
 const initialState = {
   selectedCategory: "all",
@@ -36,7 +37,7 @@ function reducer(state: typeof initialState, action: any) {
 
 function Home() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -78,45 +79,40 @@ function Home() {
   }
 
   const filteredRooms = rooms.filter((room: any) => {
-    // First check if room is available
     if (!room.isAvailable) return false;
 
-    // Check category filter
     const matchesCategory =
       selectedCategory === "all" ||
       room.Category.toLowerCase() === selectedCategory.toLowerCase();
 
-    // Check rating filter
     const matchesRating =
       selectedRating === "all" ||
       (room.rating && room.rating >= parseInt(selectedRating));
-
-    // Check search filter
     const matchesSearch =
       searchName === "" ||
       room.name.toLowerCase().includes(searchName.toLowerCase());
 
     return matchesCategory && matchesRating && matchesSearch;
   });
+
+  async function handleLogOut() {
+    try {
+      await logout();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "60vh",
-        }}
-      >
-        <div>Loading rooms...</div>
-      </div>
-    );
+    return <Spinner />;
   }
 
   return (
     <div className={Style.container}>
       <nav className={Style.header}>
-        <h1 className={Style.logo}>Bookify</h1>
+        <h1 className={Style.logo} onClick={() => navigate("/")}>
+          Bookify
+        </h1>
         <div className={Style.userActions}>
           {isLoggedIn ? (
             <>
@@ -141,6 +137,7 @@ function Home() {
                   <div className={Style.dropdownMenu}>
                     <button
                       onClick={() => {
+                        handleLogOut();
                         navigate("/login");
                         setIsMenuOpen(false);
                       }}

@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
 import styles from "./RoomPage.module.css";
+import Spinner from "../../ui/spinner";
 
 interface Room {
   id: number;
@@ -10,11 +11,10 @@ interface Room {
   description: string;
   price: number;
   isAvailable: boolean;
-  category: string;
+  Category: string;
   imageUrl: string;
 }
 
-// Define the state shape
 interface RoomPageState {
   checkInDate: string;
   checkOutDate: string;
@@ -24,9 +24,9 @@ interface RoomPageState {
   showReviewForm: boolean;
   rating: number;
   reviewText: string;
+  error: string;
 }
 
-// Initial state
 const initialState: RoomPageState = {
   checkInDate: "",
   checkOutDate: "",
@@ -36,6 +36,7 @@ const initialState: RoomPageState = {
   showReviewForm: false,
   rating: 5,
   reviewText: "",
+  error: "",
 };
 
 type RoomPageAction =
@@ -48,6 +49,7 @@ type RoomPageAction =
   | { type: "SET_RATING"; payload: number }
   | { type: "SET_REVIEW_TEXT"; payload: string }
   | { type: "RESET_REVIEW_FORM" }
+  | { type: "SET_ERROR"; payload: string }
   | { type: "CALCULATE_STAY"; payload: { days: number; price: number } };
 
 function reducer(state: RoomPageState, action: RoomPageAction): RoomPageState {
@@ -68,6 +70,8 @@ function reducer(state: RoomPageState, action: RoomPageAction): RoomPageState {
       return { ...state, rating: action.payload };
     case "SET_REVIEW_TEXT":
       return { ...state, reviewText: action.payload };
+    case "SET_ERROR":
+      return { ...state, error: action.payload };
     case "RESET_REVIEW_FORM":
       return {
         ...state,
@@ -128,7 +132,11 @@ function RoomPage() {
 
   async function handleBooking() {
     if (!isLoggedIn) {
-      console.log("Not logged in, redirecting to login");
+      dispatch({
+        type: "SET_ERROR",
+        payload: "You must be logged in to book a room.",
+      });
+      alert(state.error);
       navigate("/login");
       return;
     }
@@ -161,12 +169,17 @@ function RoomPage() {
 
   async function handleReviewSubmit() {
     if (!isLoggedIn) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: "You must be logged in to leave a review.",
+      });
+      alert(state.error);
       navigate("/login");
       return;
     }
 
     try {
-      await api.post("/addReview", {
+      await api.post("/api/addReview", {
         roomId: room?.id,
         rating: rating,
         description: reviewText,
@@ -178,13 +191,17 @@ function RoomPage() {
     }
   }
 
-  const getMinDate = () => {
+  function getMinDate() {
     const today = new Date();
     return today.toISOString().split("T")[0];
-  };
+  }
 
   if (!room) {
-    return <div className={styles.loading}>Loading room details...</div>;
+    return (
+      <Spinner>
+        <p>Loading room details...</p>
+      </Spinner>
+    );
   }
 
   return (
@@ -206,7 +223,7 @@ function RoomPage() {
         <div className={styles.roomInfo}>
           <div className={styles.roomHeader}>
             <h2 className={styles.roomName}>{room.name}</h2>
-            <span className={styles.roomCategory}>{room.category}</span>
+            <span className={styles.roomCategory}>{room.Category}</span>
           </div>
           <div className={styles.roomPrice}>
             <span>Price per night: </span>

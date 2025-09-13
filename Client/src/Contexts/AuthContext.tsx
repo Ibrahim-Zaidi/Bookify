@@ -77,7 +77,7 @@ function AuthProvider({ children }) {
 
     try {
       const response = await api.post("/register", userData);
-      const { message, user } = response.data;
+      const { user } = response.data;
 
       setUser(user);
       setIsLoggedIn(true);
@@ -95,7 +95,8 @@ function AuthProvider({ children }) {
     setError(null);
 
     try {
-      await api.post("/logout");
+      const log_out = await api.post("/api/logout");
+      console.log(log_out);
     } catch (error) {
       console.error("Logout failed:", error);
       handleError(error, "general");

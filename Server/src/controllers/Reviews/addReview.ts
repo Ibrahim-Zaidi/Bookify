@@ -8,7 +8,6 @@ async function addReview(req: Request, res: Response) {
     const { roomId, rating, description } = req.body;
     const userId = req.user.id; // From auth middleware
 
-    // Validation
     if (!roomId) {
       return res.status(400).json({ message: "Room ID is required" });
     }
@@ -19,31 +18,30 @@ async function addReview(req: Request, res: Response) {
         .json({ message: "Rating must be between 1 and 5" });
     }
 
-    // Check if room exists
     const room = await prisma.room.findUnique({
-      where: { id: parseInt(roomId) },
+      where: {
+        id: parseInt(roomId),
+      },
     });
 
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
 
-    // Check if user already has a review for this room
-    const existingReview = await prisma.review.findFirst({
-      where: {
-        userId: parseInt(userId),
-        roomId: parseInt(roomId),
-      },
-    });
+    // const existingReview = await prisma.review.findFirst({
+    //   where: {
+    //     userId: parseInt(userId),
+    //     roomId: parseInt(roomId),
+    //   },
+    // });
 
-    if (existingReview) {
-      return res.status(400).json({
-        message:
-          "You have already reviewed this room. You can update or delete your existing review.",
-      });
-    }
+    // if (existingReview) {
+    //   return res.status(400).json({
+    //     message:
+    //       "You have already reviewed this room. You can update or delete your existing review.",
+    //   });
+    // }
 
-    // Create new review
     const newReview = await prisma.review.create({
       data: {
         userId: parseInt(userId),
