@@ -2,17 +2,35 @@ import prisma from "../../prisma/prismaClient";
 
 async function getRoomReviews(req: Request, res: Response) {
   try {
-    const { roomId } = req.params;
+    const { roomId } = req.body;
 
     if (!roomId) {
       return res.status(400).json({ message: "Room ID is required" });
     }
 
     const reviews = await prisma.review.findMany({
-      where: { roomId: parseInt(roomId) },
+      where: {
+        roomId: parseInt(roomId),
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            FirstName: true,
+            LastName: true,
+          },
+        },
+        room: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+      },
     });
 
-    const ratingsOnly = reviews.filter((review) => review.rating !== null);
+    const ratingsOnly = reviews.filter((review) => review.rating != null);
     const averageRating =
       ratingsOnly.length > 0
         ? ratingsOnly.reduce((sum, review) => sum + review.rating!, 0) /
@@ -22,7 +40,7 @@ async function getRoomReviews(req: Request, res: Response) {
     res.status(200).json({
       reviews,
       totalReviews: reviews.length,
-      averageRating: Math.round(averageRating * 10) / 10,
+      averageRating: Math.round(averageRating),
     });
   } catch (error) {
     console.error("Get room reviews error:", error);

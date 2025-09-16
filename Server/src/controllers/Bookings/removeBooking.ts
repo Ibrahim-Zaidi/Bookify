@@ -5,9 +5,20 @@ async function removeBooking(req: Request, res: Response) {
   const { id } = req.params;
 
   try {
+    const findBooking = await prisma.booking.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+      select: { roomId: true },
+    });
+
+    if (!findBooking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+
     // We use a transaction to delete the booking and update the room's availability
 
-    const deletedBooking = await prisma.booking.$transaction([
+    const deletedBooking = await prisma.$transaction([
       prisma.booking.delete({
         where: {
           id: parseInt(id),
@@ -15,7 +26,7 @@ async function removeBooking(req: Request, res: Response) {
       }),
       prisma.room.update({
         where: {
-          id: parseInt(id),
+          id: findBooking.roomId,
         },
         data: {
           isAvailable: true,

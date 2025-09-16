@@ -28,20 +28,6 @@ async function addReview(req: Request, res: Response) {
       return res.status(404).json({ message: "Room not found" });
     }
 
-    // const existingReview = await prisma.review.findFirst({
-    //   where: {
-    //     userId: parseInt(userId),
-    //     roomId: parseInt(roomId),
-    //   },
-    // });
-
-    // if (existingReview) {
-    //   return res.status(400).json({
-    //     message:
-    //       "You have already reviewed this room. You can update or delete your existing review.",
-    //   });
-    // }
-
     const newReview = await prisma.review.create({
       data: {
         userId: parseInt(userId),

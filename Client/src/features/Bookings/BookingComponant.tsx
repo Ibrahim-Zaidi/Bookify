@@ -1,4 +1,7 @@
 import styles from "./userBookings.module.css";
+import { formatDate, calculateNights } from "../../utils/helpers";
+// import { useEffect } from "react";
+import api from "../../api/axios";
 
 interface BookingProps {
   booking: {
@@ -19,22 +22,18 @@ interface BookingProps {
 }
 
 function BookingComponant({ booking }: BookingProps) {
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  async function deleteBooking() {
+    try {
+      const deletedRes = await api.delete(`/api/deleteBooking/${booking.id}`);
+      console.log(deletedRes);
 
-  const calculateNights = (startDate: string, endDate: string) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+      if (deletedRes) {
+        window.location.reload();
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  }
 
   return (
     <div key={booking.id} className={styles.bookingCard}>
@@ -81,7 +80,7 @@ function BookingComponant({ booking }: BookingProps) {
           </div>
 
           <button
-            // onClick={() => onHandleDeleteClick(booking.id)}
+            onClick={() => deleteBooking()}
             className={styles.cancelButton}
           >
             Cancel Booking

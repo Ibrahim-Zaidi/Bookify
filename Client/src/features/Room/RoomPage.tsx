@@ -191,6 +191,21 @@ function RoomPage() {
     }
   }
 
+  useEffect(() => {
+    async function fetchRoomReviews() {
+      try {
+        const response = await api.get(`/api/getRoomReviews`, {
+          data: { roomId: room?.id },
+        });
+        console.log("Room reviews:", response.data);
+      } catch (error) {
+        console.error("Failed to fetch room reviews:", error);
+      }
+    }
+
+    fetchRoomReviews();
+  }, [room?.id]);
+
   function getMinDate() {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -342,6 +357,9 @@ function RoomPage() {
               </button>
             </div>
           )}
+          <div className={styles.existingReviews}>
+            <p>No reviews yet. Be the first to review this room!</p>
+          </div>
         </div>
       </div>
     </div>

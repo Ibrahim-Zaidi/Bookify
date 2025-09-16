@@ -1,6 +1,5 @@
 import express from "express";
 import passport from "passport";
-import "./config/passport";
 
 // routes
 import public_routes from "./routes/publicRoutes";

@@ -52,37 +52,6 @@ function UserBookings() {
     fetchBookings();
   }, []);
 
-  // const handleDeleteClick = (id: number) => {
-  //   setDeleteId(id);
-  //   setShowConfirmation(true);
-  // };
-
-  // const confirmDelete = async () => {
-  //   if (!deleteId) return;
-
-  //   setIsDeleting(true);
-  //   try {
-  //     // This endpoint needs to be implemented on the server
-  //     await api.delete(`/api/deleteBooking`, {
-  //       data: { bookingId: deleteId },
-  //     });
-
-  //     setBookings(bookings.filter((booking) => booking.id !== deleteId));
-  //     setShowConfirmation(false);
-  //   } catch (err) {
-  //     console.error("Failed to delete booking:", err);
-  //     setError("Failed to delete booking. Please try again.");
-  //   } finally {
-  //     setIsDeleting(false);
-  //     setDeleteId(null);
-  //   }
-  // };
-
-  // const cancelDelete = () => {
-  //   setShowConfirmation(false);
-  //   setDeleteId(null);
-  // };
-
   return (
     <div className={styles.container}>
       {/* Header */}

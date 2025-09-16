@@ -6,6 +6,7 @@ import logout from "../controllers/authentication/Logout";
 import handleGoogleAuth from "../controllers/authentication/googleOAuth";
 import addRoom from "../controllers/Rooms/addRoom";
 import getAllRooms from "../controllers/Rooms/getAllRooms";
+import getRoomReviews from "../controllers/Reviews/getRoomReviews";
 
 const public_routes = Router();
 
@@ -26,5 +27,6 @@ public_routes.post("/auth/google", handleGoogleAuth);
 
 public_routes.post("/addRoom", addRoom);
 public_routes.get("/getAllRooms", getAllRooms);
+public_routes.get("/getRoomReviews", getRoomReviews);
 
 export default public_routes;
