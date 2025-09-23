@@ -2,8 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import prisma from "../prisma/prismaClient";
 import keys from "../config/keys";
+import { CustomRequest, CustomJwtPayload } from "../types/types";
 
-async function authMiddleware(req: Request, res: Response, next: NextFunction) {
+async function authMiddleware(
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) {
   const token = req.cookies.token;
 
   console.log("Token from cookies : ", token);
@@ -15,7 +20,10 @@ async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   }
 
   try {
-    const decoded = jwt.verify(token, keys.jwtToken);
+    const decoded = jwt.verify(
+      token,
+      keys.jwtToken as string
+    ) as CustomJwtPayload;
     const userIdentifier = decoded.userId || decoded.id;
 
     console.log("decoded : ", decoded);

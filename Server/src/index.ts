@@ -11,6 +11,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authMiddleware from "./Middlewares/authMiddlware";
 import "dotenv/config.js";
+import bodyParser from "body-parser";
 
 const port = keys.port;
 const app = express();
@@ -27,7 +28,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
