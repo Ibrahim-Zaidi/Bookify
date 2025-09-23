@@ -3,14 +3,10 @@ import jwt from "jsonwebtoken";
 import prisma from "../prisma/prismaClient";
 import keys from "../config/keys";
 
-const authMiddleware = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+async function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const token = req.cookies.token;
 
-  console.log("_________________________________ : ", token);
+  console.log("Token from cookies : ", token);
 
   if (!token) {
     return res.status(401).json({
@@ -43,6 +39,6 @@ const authMiddleware = async (
 
     return res.status(403).json({ message: "Invalid or expired token." });
   }
-};
+}
 
 export default authMiddleware;

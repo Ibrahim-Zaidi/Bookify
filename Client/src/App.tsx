@@ -10,18 +10,14 @@ import Welcoming from "./features/Welcome/Welcoming.tsx";
 import RoomPage from "./features/Room/RoomPage.tsx";
 import ProtectedRoute from "./ui/ProtectedRoute.tsx";
 import UserBookings from "./features/Bookings/userBookings.tsx";
+import Error from "./ui/Error.tsx";
 
 const Login = lazy(() => import("./features/Login/login.tsx"));
 const Register = lazy(() => import("./features/Register/Register.tsx"));
 
 function App() {
   return (
-    <GoogleOAuthProvider
-      clientId={
-        import.meta.env.VITE_CLIENT_ID ||
-        "243806731921-pni20de9b5v3qdndjr2neaprrek9lh8c.apps.googleusercontent.com"
-      }
-    >
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
       <AuthProvider>
         <Router>
           <Routes>
@@ -38,8 +34,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-
-            <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="*" element={<Error />} />
           </Routes>
         </Router>
       </AuthProvider>

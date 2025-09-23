@@ -1,0 +1,12 @@
+model Room {
+  id Int @id @default(autoincrement())
+  name String 
+  description String?
+  price Float @default(0.00)
+  isAvailable Boolean @default(true)
+  Category String
+  imageUrl String?
+  
+  bookings Booking[]
+  reviews Review[]
+}

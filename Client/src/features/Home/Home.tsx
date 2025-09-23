@@ -7,12 +7,19 @@ import Style from "./Home.module.css";
 import icon from "../../Assets/booking-reservation-icon.svg";
 import Spinner from "../../ui/spinner";
 
-const initialState = {
+type initialStateType = {
+  selectedCategory: string;
+  selectedRating: string;
+  searchName: string;
+  rooms: any[];
+  error: string | null;
+};
+
+const initialState: initialStateType = {
   selectedCategory: "all",
   selectedRating: "all",
   searchName: "",
   rooms: [],
-  isLoading: false,
   error: null,
 };
 
@@ -26,8 +33,6 @@ function reducer(state: typeof initialState, action: any) {
       return { ...state, searchName: action.payload };
     case "SET_ROOMS":
       return { ...state, rooms: action.payload };
-    case "SET_LOADING":
-      return { ...state, isLoading: action.payload };
     case "SET_ERROR":
       return { ...state, error: action.payload };
     default:
@@ -37,30 +42,28 @@ function reducer(state: typeof initialState, action: any) {
 
 function Home() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user, logout, setIsLoading, isLoading } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const {
-    selectedCategory,
-    selectedRating,
-    rooms,
-    searchName,
-    isLoading,
-    error,
-  } = state;
+  console.log(isLoggedIn);
+
+  const username =
+    user?.data?.username.split(" ")[0] || user?.username?.split(" ")[0];
+
+  const { selectedCategory, selectedRating, rooms, searchName } = state;
 
   useEffect(() => {
     async function getRooms() {
-      dispatch({ type: "SET_LOADING", payload: true });
+      setIsLoading(true);
       try {
         const data = await api.get("/getAllRooms");
         const { rooms } = data.data;
         dispatch({ type: "SET_ROOMS", payload: rooms });
-      } catch (err) {
-        dispatch({ type: "SET_ERROR", payload: "failed to load rooms" });
+      } catch (err: any) {
+        dispatch({ type: "SET_ERROR", payload: err.message });
       } finally {
-        dispatch({ type: "SET_LOADING", payload: false });
+        setIsLoading(false);
       }
     }
     getRooms();
@@ -78,7 +81,9 @@ function Home() {
     dispatch({ type: "SET_SEARCH_NAME", payload: e.target.value });
   }
 
-  const filteredRooms = rooms.filter((room: any) => {
+  console.log(rooms);
+
+  const filteredRooms = rooms?.filter((room: any) => {
     if (!room.isAvailable) return false;
 
     const matchesCategory =
@@ -95,11 +100,11 @@ function Home() {
     return matchesCategory && matchesRating && matchesSearch;
   });
 
-  async function handleLogOut() {
+  function handleLogOut() {
     try {
-      await logout();
-    } catch (err) {
-      console.log(err);
+      logout();
+    } catch (error) {
+      dispatch({ type: "SET_ERROR", payload: "Logout failed. try again" });
     }
   }
 
@@ -129,8 +134,7 @@ function Home() {
                   className={Style.userMenuButton}
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
                 >
-                  Hi, {user.username}!
-                  <span className={Style.dropdownArrow}>▼</span>
+                  Hi, {username}!<span className={Style.dropdownArrow}>▼</span>
                 </button>
 
                 {isMenuOpen && (

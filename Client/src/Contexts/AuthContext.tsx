@@ -1,45 +1,70 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import api from "../api/axios";
 
-interface User {
+type User = {
   id: number;
   username: string;
   email: string;
-}
+};
 
-interface AuthError {
+type AuthError = {
   message: string;
-  type: "login" | "register" | "general";
-}
+  type: "login" | "register" | "general"; // because generally the error cant get outside of these three types
+};
 
-interface AuthContextType {
-  user: User;
+type AuthContextType = {
+  user: User | null;
+  setUser: (user: User | null) => void;
   isLoggedIn: boolean;
-  error: AuthError;
-  isLoading: boolean;
-  logout: () => void;
-  setIsLoggedIn: (loggedIn: boolean) => void;
+  error: AuthError | null;
   login: (credentials: {
     identifier: string;
     password: string;
   }) => Promise<void>;
-}
+  isLoading: boolean;
+  setError: (error: AuthError | null) => void;
+  logout: () => void;
+  setIsLoggedIn: (loggedIn: boolean) => void;
+  register: (userData: any) => Promise<void>;
+};
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-function AuthProvider({ children }) {
-  const [user, setUser] = useState<User | null>(null);
+function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleError = useCallback((err: any, type: AuthError["type"]) => {
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // endpoint to get the user info if he is logged in already
+        const user = await api.get("/api/user_information");
+        setUser(user);
+        setIsLoggedIn(true);
+      } catch (error) {
+        setIsLoggedIn(false);
+        setUser(null);
+        handleError(error, "general");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    checkAuth();
+  }, []);
+
+  function handleError(err: any, type: AuthError["type"]) {
     let message = "An unexpected error occurred";
 
     if (err.response) {
       message =
         err.response.data.message ||
-        `${err.response.status}: ${err.response.statusText}`;
+        `${err.response.status}: ${err.response.message}`;
     } else if (err.request) {
       message = "Network error: Unable to connect to server";
     } else if (err.message) {
@@ -50,7 +75,7 @@ function AuthProvider({ children }) {
       message,
       type,
     });
-  }, []);
+  }
 
   async function login(credentials: { identifier: string; password: string }) {
     setIsLoading(true);
@@ -58,9 +83,7 @@ function AuthProvider({ children }) {
 
     try {
       const response = await api.post("/login", credentials);
-      const { message, user } = response.data;
-
-      console.log(message, " ! ");
+      const { user } = response.data;
       setUser(user);
       setIsLoggedIn(true);
     } catch (error) {
@@ -90,13 +113,12 @@ function AuthProvider({ children }) {
     }
   }
 
-  const logout = useCallback(async () => {
+  async function logout() {
     setIsLoading(true);
     setError(null);
 
     try {
-      const log_out = await api.post("/api/logout");
-      console.log(log_out);
+      await api.post("/api/logout");
     } catch (error) {
       console.error("Logout failed:", error);
       handleError(error, "general");
@@ -105,17 +127,17 @@ function AuthProvider({ children }) {
       setIsLoggedIn(false);
       setIsLoading(false);
     }
-  }, [handleError]);
+  }
 
   const value: AuthContextType = {
     user,
     isLoggedIn,
     error,
+    setIsLoading,
     isLoading,
     login,
     register,
     logout,
-    setError,
     setUser,
     setIsLoggedIn,
   };

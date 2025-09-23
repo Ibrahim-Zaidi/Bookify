@@ -31,13 +31,13 @@ async function addBooking(req: Request, res: Response) {
     });
 
     if (!room) {
-      return res.status(404).json({
+      res.status(404).json({
         message: "Room not found",
       });
     }
 
     if (!room.isAvailable) {
-      return res.status(400).json({
+      res.status(400).json({
         message: "Room is not available for booking",
       });
     }

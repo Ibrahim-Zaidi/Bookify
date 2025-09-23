@@ -1,21 +1,18 @@
 import { useNavigate } from "react-router";
 import Style from "./RoomCard.module.css";
 
-interface RoomCardProps {
+type RoomCardProps = {
   id: number;
   name: string;
   imageUrl: string;
   Category: string;
   isAvailable: boolean;
-
   price: number;
   rating: number;
-}
+};
 
 function RoomCard({ room }: { room: RoomCardProps }) {
   const { id, name, imageUrl, Category, isAvailable, rating, price } = room;
-  console.log(room);
-
   const navigate = useNavigate();
 
   const handleNavigate = () => {

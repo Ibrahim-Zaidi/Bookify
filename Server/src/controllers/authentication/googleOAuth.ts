@@ -77,7 +77,6 @@ async function handleGoogleAuth(req: Request, res: Response): Promise<any> {
       },
     });
   } catch (error: any) {
-    console.error("Google Auth Error:", error);
     return res.status(401).json({
       message: "Google authentication failed",
       error: error.message,

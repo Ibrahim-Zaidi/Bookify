@@ -324,11 +324,20 @@
     min-height: calc(100vh - 80px);
   }
 
+  .welcomingContent p {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .highlight {
+    transform: translateX(3rem);
+  }
+
   .textContent {
     flex: 1;
     padding: 3rem 2rem;
     text-align: left;
-    max-width: 50%;
+    /* max-width: 50%; */
   }
 
   .title {
@@ -347,8 +356,8 @@
   }
 
   .exploreBtn {
-    align-self: flex-start;
-    padding: 1.125rem 2.5rem;
+    align-self: flex-end;
+    padding: 1rem 2rem;
     font-size: 1.2rem;
   }
 
@@ -413,7 +422,7 @@
 
   .img1,
   .img2 {
-    height: 300px;
+    height: 250px;
     max-width: 600px;
   }
 
@@ -436,15 +445,6 @@
 
   .title {
     font-size: 4rem;
-  }
-
-  .imageContent {
-    padding: 4rem;
-  }
-
-  .img1,
-  .img2 {
-    height: 350px;
   }
 }
 

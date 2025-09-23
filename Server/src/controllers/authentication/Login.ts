@@ -45,28 +45,24 @@ async function logIn(req: Request, res: Response): Promise<void> {
       { session: false },
       (err: any, user: any, info: any) => {
         if (err) {
-          return res.status(400).json({ message: err.message });
+          res.status(400).json({ message: err.message });
         }
         if (!user) {
-          return res
-            .status(404)
-            .json({ message: "User not found. Please register" });
+          res.status(404).json({ message: "User not found. Please register" });
         }
 
         const token = Jwt.sign(
           { email: user.email, username: user.username, id: user.id },
           keys.jwtToken,
-          { expiresIn: "15m" }
+          { expiresIn: "7d" }
         );
 
         res.cookie("token", token, {
           httpOnly: true,
-          maxAge: 36000 * 24 * 7,
+          maxAge: 36000 * 24 * 7, // 7 days
         });
 
-        return res
-          .status(200)
-          .json({ message: "logged in successfully", user });
+        res.status(200).json({ message: "logged in successfully", user });
       }
     )(req, res);
   } catch (err: any) {

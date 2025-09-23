@@ -3,20 +3,17 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
-  /* cursor: pointer; */
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   position: relative;
   height: 100%;
-  width: 18rem;
+
   margin: 1rem;
-  /* width: 90%; */
-  /* width: 90%; */
 }
 
 .roomCard:hover {
-  transform: translateY(-8px);
+  transform: translateY(-6px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
 }
 
@@ -224,6 +221,7 @@
 @media (max-width: 768px) {
   .roomCard {
     border-radius: 8px;
+    width: 18rem;
   }
 
   .roomImage {
@@ -250,7 +248,7 @@
 
 @media (min-width: 480px) {
   .roomCard {
-    width: 25rem;
+    width: 22rem;
   }
 }
 

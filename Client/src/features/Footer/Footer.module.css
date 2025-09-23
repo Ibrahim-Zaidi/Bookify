@@ -1,0 +1,57 @@
+.footer {
+  background-color: var(--fifth-color);
+  color: var(--secondary-color);
+  padding: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 3rem;
+  border-top: 1px solid var(--fourth-color);
+}
+
+.title {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.subTitle {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--main-color);
+  opacity: 0.9;
+}
+
+.heart {
+  color: var(--third-color);
+  display: inline-block;
+  font-size: 1.1rem;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 2rem 0;
+  }
+
+  .title {
+    font-size: 1.1rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+}

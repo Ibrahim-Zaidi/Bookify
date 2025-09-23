@@ -1,0 +1,14 @@
+// This is a Prisma schema file defining the Review model and its relations to User and Room models.
+
+model Review {
+  id Int @id @default(autoincrement())
+  rating Int?
+  description String?
+
+  roomId Int
+  userId Int
+
+  room Room @relation(fields : [roomId] , references : [id]) 
+  user User @relation(fields : [userId] , references : [id])
+
+}

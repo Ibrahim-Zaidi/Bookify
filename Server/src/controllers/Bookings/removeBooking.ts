@@ -13,7 +13,8 @@ async function removeBooking(req: Request, res: Response) {
     });
 
     if (!findBooking) {
-      return res.status(404).json({ message: "Booking not found" });
+      res.status(404).json({ message: "Booking not found" });
+      return;
     }
 
     // We use a transaction to delete the booking and update the room's availability
@@ -38,7 +39,7 @@ async function removeBooking(req: Request, res: Response) {
       message: "Booking deleted successfully",
       booking: deletedBooking,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       message: "Booking deletion failed",
       error: error.message,

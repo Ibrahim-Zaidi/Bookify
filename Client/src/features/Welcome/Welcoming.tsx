@@ -5,10 +5,13 @@ import Room2 from "../../assets/Room2.jpg";
 
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Contexts/AuthContext";
+import Footer from "../Footer/Footer";
 
 function Welcoming() {
   const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
+
+  console.log(user);
 
   return (
     <div className={Style.container}>
@@ -19,8 +22,7 @@ function Welcoming() {
         </div>
         <div>
           {isLoggedIn ? (
-            // <h1>{user.username}</h1>
-            <h1>LOGGED IN! </h1>
+            <h1>{user?.data.username}</h1>
           ) : (
             <>
               <button
@@ -45,8 +47,10 @@ function Welcoming() {
             Welcome to <span>Bookify</span>
           </h1>
           <p>
-            your best bet for quality bookings😉. Dive into our extensive
-            collection
+            <span>Your best bet for quality bookings😉</span>
+            <span className={Style.highlight}>
+              Dive into our extensive collection ...
+            </span>
           </p>
           <button
             className={Style.exploreBtn}
@@ -60,9 +64,7 @@ function Welcoming() {
           <img src={Room2} alt="Room_two" className={Style.img2} />
         </div>
       </div>
-      <footer className={Style.footer}>
-        <p>© 2024 Bookify. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

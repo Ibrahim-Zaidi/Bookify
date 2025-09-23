@@ -1,4 +1,4 @@
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import api from "../api/axios";
 import { useAuth } from "../Contexts/AuthContext";
@@ -7,7 +7,7 @@ function GoogleOAuthButton() {
   const navigate = useNavigate();
   const { setUser, setIsLoggedIn } = useAuth();
 
-  async function handleLoginSuccess(response: any) {
+  async function handleLoginSuccess(response: CredentialResponse) {
     try {
       const payload = response.credential;
       const sentResult = await api.post("/auth/google", { idToken: payload });

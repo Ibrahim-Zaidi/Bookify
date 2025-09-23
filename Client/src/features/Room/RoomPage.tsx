@@ -1,11 +1,13 @@
-import { useState, useEffect, useReducer } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useReducer, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
 import styles from "./RoomPage.module.css";
 import Spinner from "../../ui/spinner";
+import Reviews from "./Reviews";
+// import Reviews from "./Reviews";
 
-interface Room {
+type Room = {
   id: number;
   name: string;
   description: string;
@@ -13,9 +15,9 @@ interface Room {
   isAvailable: boolean;
   Category: string;
   imageUrl: string;
-}
+};
 
-interface RoomPageState {
+type RoomPageState = {
   checkInDate: string;
   checkOutDate: string;
   numberOfDays: number;
@@ -25,7 +27,7 @@ interface RoomPageState {
   rating: number;
   reviewText: string;
   error: string;
-}
+};
 
 const initialState: RoomPageState = {
   checkInDate: "",
@@ -91,14 +93,14 @@ function reducer(state: RoomPageState, action: RoomPageAction): RoomPageState {
 }
 
 function RoomPage() {
-  const { id } = useParams();
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
   const location = useLocation();
-
-  const [room, setRoom] = useState<Room | null>(location.state?.room || null);
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // const { currentReview, setCurrentReview } = useState<reviewType | null>(null);
+
+  const room = location.state?.room as Room;
   const {
     checkInDate,
     checkOutDate,
@@ -109,6 +111,8 @@ function RoomPage() {
     rating,
     reviewText,
   } = state;
+
+  console.log(reviewText, rating, room?.id);
 
   useEffect(() => {
     if (checkInDate && checkOutDate && room) {
@@ -142,7 +146,10 @@ function RoomPage() {
     }
 
     if (!checkInDate || !checkOutDate || numberOfDays <= 0) {
-      console.log("Invalid dates selected");
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Please select valid check-in and check-out dates.",
+      });
       return;
     }
 
@@ -154,13 +161,13 @@ function RoomPage() {
         endTime: checkOutDate,
         totalPrice: totalPrice,
       };
-      console.log("Booking data:", bookingData);
-
-      const apiData = await api.post("/api/addBooking", bookingData);
-
-      console.log("Booking successful:", apiData);
+      await api.post("/api/addBooking", bookingData);
       navigate("/Bookings");
     } catch (error) {
+      dispatch({
+        type: "SET_ERROR",
+        payload: "Booking failed. try again",
+      });
       console.error("Booking failed:", error);
     } finally {
       dispatch({ type: "SET_IS_BOOKING", payload: false });
@@ -190,21 +197,6 @@ function RoomPage() {
       console.error("Failed to submit review:", error);
     }
   }
-
-  useEffect(() => {
-    async function fetchRoomReviews() {
-      try {
-        const response = await api.get(`/api/getRoomReviews`, {
-          data: { roomId: room?.id },
-        });
-        console.log("Room reviews:", response.data);
-      } catch (error) {
-        console.error("Failed to fetch room reviews:", error);
-      }
-    }
-
-    fetchRoomReviews();
-  }, [room?.id]);
 
   function getMinDate() {
     const today = new Date();
@@ -312,6 +304,8 @@ function RoomPage() {
         {/* Reviews Section */}
         <div className={styles.reviewsSection}>
           <h3>Reviews</h3>
+          <Reviews roomId={room.id} />
+
           <button
             onClick={() => dispatch({ type: "TOGGLE_REVIEW_FORM" })}
             className={styles.reviewButton}
@@ -320,35 +314,48 @@ function RoomPage() {
           </button>
           {showReviewForm && (
             <div className={styles.reviewForm}>
-              <label>Rating</label>
-              <div className={styles.ratingStars}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    onClick={() =>
-                      dispatch({
-                        type: "SET_RATING",
-                        payload: star,
-                      })
-                    }
-                    className={
-                      star <= rating ? styles.activeStar : styles.inactiveStar
-                    }
-                  >
-                    ★
-                  </button>
-                ))}
+              <div className={styles.formGroup}>
+                <label>Leave your review </label>
+                <div className={styles.ratingStars}>
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      onClick={() =>
+                        dispatch({
+                          type: "SET_RATING",
+                          payload: star,
+                        })
+                      }
+                      className={
+                        star <= rating ? styles.activeStar : styles.inactiveStar
+                      }
+                      title={`${star === 1 ? "1 star" : `${star} stars`}`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                  <span className={styles.ratingHelper}>
+                    {rating} of 5 stars
+                  </span>
+                </div>
               </div>
-              <textarea
-                value={reviewText}
-                onChange={(e) =>
-                  dispatch({
-                    type: "SET_REVIEW_TEXT",
-                    payload: e.target.value,
-                  })
-                }
-                placeholder="Write your review here..."
-              />
+
+              <div className={styles.formGroup}>
+                {/* <label htmlFor="reviewText">Share your experience</label> */}
+                <textarea
+                  id="reviewText"
+                  value={reviewText}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "SET_REVIEW_TEXT",
+                      payload: e.target.value,
+                    })
+                  }
+                  placeholder="Share your experience/Opinion about this room..."
+                  maxLength={500}
+                />
+              </div>
+
               <button
                 onClick={handleReviewSubmit}
                 className={styles.submitReviewButton}
