@@ -31,15 +31,19 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// routes
+// Define API routes first
+app.use("/", public_routes);
+app.use("/api", authMiddleware, auth_Routes);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "Client")));
-  app.get("*", (_, res) => {
-    res.sendFile(path.join(__dirname, "Client", "index.html"));
+  app.use(express.static(path.join(__dirname, "../client")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client", "index.html"));
   });
 }
 
+// routes
 app.use("/", public_routes);
 app.use("/api", authMiddleware, auth_Routes);
 
