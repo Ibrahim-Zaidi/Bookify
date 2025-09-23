@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma/prismaClient";
+import { CustomRequest } from "../../types/types";
 
-async function addBooking(req: Request, res: Response) {
+async function addBooking(req: CustomRequest, res: Response) {
   const { roomId, totalPrice, startTime, endTime } = req.body;
 
   // we get the user id from the middlware that adds the user to the request object,
