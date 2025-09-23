@@ -1,8 +1,10 @@
 import prisma from "../../prisma/prismaClient";
 
+import { Request, Response } from "express";
+
 async function getRoomReviews(req: Request, res: Response) {
   try {
-    const { roomId } = req.body;
+    const { roomId } = req.body as { roomId?: string };
 
     if (!roomId) {
       return res.status(400).json({ message: "Room ID is required" });

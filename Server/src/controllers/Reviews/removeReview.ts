@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import prisma from "../../prisma/prismaClient";
+import { CustomRequest } from "../../types/types";
 
-async function removeReview(req: Request, res: Response) {
+async function removeReview(req: CustomRequest, res: Response) {
   try {
     const { id } = req.params;
     const userId = req.user.id;

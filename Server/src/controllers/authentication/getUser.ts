@@ -1,10 +1,9 @@
 import prisma from "../../prisma/prismaClient";
 
 import { Request, Response } from "express";
+import { CustomRequest } from "../../types/types";
 
-async function getUser(req: Request, res: Response): Promise<void> {
-  console.log(req.user);
-
+async function getUser(req: CustomRequest, res: Response): Promise<void> {
   const userId = req.user?.userId || req.user?.id;
 
   if (!userId) {

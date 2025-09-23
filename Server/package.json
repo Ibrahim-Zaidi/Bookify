@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "npx prisma generate && node dist/index.js",
-    "build": "node -e \"const { build } = require('esbuild'); const pkg = require('./package.json'); build({ entryPoints: ['src/index.ts'], bundle: true, platform: 'node', outfile: 'dist/index.js', external: Object.keys(pkg.dependencies) });\"",
+    "build": "tsc",
     "postinstall": "npm run build && npx prisma generate"
   },
   "keywords": [],
@@ -20,7 +20,6 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "esbuild": "^0.25.10",
     "express": "^5.1.0",
     "google-auth-library": "^10.3.0",
     "jsonwebtoken": "^9.0.2",

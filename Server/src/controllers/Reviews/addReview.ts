@@ -1,9 +1,10 @@
 // controllers/reviewController.ts
 import { Request, Response } from "express";
 import prisma from "../../prisma/prismaClient";
+import { CustomRequest } from "../../types/types";
 
 // Add a new review
-async function addReview(req: Request, res: Response) {
+async function addReview(req: CustomRequest, res: Response) {
   try {
     const { roomId, rating, description } = req.body;
     const userId = req.user.id; // From auth middleware

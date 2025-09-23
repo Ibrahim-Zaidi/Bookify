@@ -1,7 +1,8 @@
 import { Response, Request } from "express";
 import prisma from "../../prisma/prismaClient";
+import { CustomRequest } from "../../types/types";
 
-async function getBookings(req: Request, res: Response) {
+async function getBookings(req: CustomRequest, res: Response) {
   try {
     const { id: userId } = req.user;
 
