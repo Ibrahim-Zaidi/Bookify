@@ -1,5 +1,6 @@
 import express from "express";
 import passport from "passport";
+import path from "path";
 
 // routes
 import public_routes from "./routes/publicRoutes";
@@ -31,6 +32,13 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 // routes
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "Client")));
+  app.get("*", (_, res) => {
+    res.sendFile(path.join(__dirname, "Client", "index.html"));
+  });
+}
 
 app.use("/", public_routes);
 app.use("/api", authMiddleware, auth_Routes);

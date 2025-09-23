@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js && npx prisma generate",
+    "postinstall": "npm run build && npx prisma generate"
   },
   "keywords": [],
   "author": "Ibrahim Zaidi",

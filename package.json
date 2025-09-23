@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "server": "concurrently \"cd Server && npm run dev \"  \" cd Client && npm run dev \"",
-    "build": "tsc"
+    "dev": "concurrently \"cd Server && npm run dev\" \"cd Client && npm run dev\"",
+    "build": "npm run build-client && npm run build-server",
+    "build-client": "cd Client && npm install && npm run build",
+    "build-server": "cd Server && npm install && npm run build",
+    "postbuild": "npm run copy-client",
+    "copy-client": "mkdir -p Server/dist/client && cp -r Client/dist/* Server/dist/client/",
+    "start": "cd Server && npm start"
   },
   "keywords": [],
   "author": "",
