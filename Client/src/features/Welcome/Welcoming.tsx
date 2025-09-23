@@ -1,7 +1,7 @@
 import Style from "./Welcoming.module.css";
-import logo from "../../assets/B.svg";
-import Room1 from "../../assets/Room_welcome.jpg";
-import Room2 from "../../assets/Room2.jpg";
+import logo from "../../Assets/B.svg";
+import Room1 from "../../Assets/Room_welcome.jpg";
+import Room2 from "../../Assets/Room2.jpg";
 
 import { useNavigate } from "react-router";
 import { useAuth } from "../../Contexts/AuthContext";
