@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
 import styles from "./userBookings.module.css";
-import logo from "../../assets/B.svg";
+import logo from "../../Assets/B.svg";
 import BookingComponant from "./BookingComponant";
 
 interface Booking {
