@@ -33,10 +33,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
+// routes
+app.use("/", public_routes);
+app.use("/api", authMiddleware, auth_Routes);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
 
-  // Define API routes first
   app.use("/", public_routes);
   app.use("/api", authMiddleware, auth_Routes);
 
@@ -44,9 +47,5 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "public", "index.html"));
   });
 }
-
-// routes
-app.use("/", public_routes);
-app.use("/api", authMiddleware, auth_Routes);
 
 app.listen(port, () => console.log("server is running in port : " + port));
