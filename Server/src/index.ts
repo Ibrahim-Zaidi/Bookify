@@ -33,15 +33,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
-// Define API routes first
-app.use("/", public_routes);
-app.use("/api", authMiddleware, auth_Routes);
-
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client")));
+  app.use(express.static(path.join(__dirname, "public")));
+
+  // Define API routes first
+  app.use("/", public_routes);
+  app.use("/api", authMiddleware, auth_Routes);
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client", "index.html"));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
   });
 }
 
