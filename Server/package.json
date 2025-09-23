@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "start": "npx prisma generate && node dist/index.js",
-    "build": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --external:@prisma/client",
+    "build": "node -e \"const { build } = require('esbuild'); const pkg = require('./package.json'); build({ entryPoints: ['src/index.ts'], bundle: true, platform: 'node', outfile: 'dist/index.js', external: Object.keys(pkg.dependencies) });\"",
     "postinstall": "npm run build && npx prisma generate"
   },
   "keywords": [],
