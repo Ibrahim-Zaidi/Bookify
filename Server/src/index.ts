@@ -15,7 +15,7 @@ import bodyParser from "body-parser";
 
 const port = keys.port;
 const app = express();
-
+const __dirname = path.resolve();
 // middlewares
 
 app.use(
