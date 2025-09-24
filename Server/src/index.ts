@@ -6,7 +6,7 @@ import path from "path";
 import public_routes from "./routes/publicRoutes";
 import auth_Routes from "./routes/authRoutes";
 
-import keys from "../src/config/keys";
+import keys from "./config/keys";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import authMiddleware from "./Middlewares/authMiddlware";
