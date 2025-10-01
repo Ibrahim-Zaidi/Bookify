@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../Contexts/AuthContext";
 import api from "../../api/axios";
@@ -112,13 +112,10 @@ function RoomPage() {
     reviewText,
   } = state;
 
-  console.log(reviewText, rating, room?.id);
-
   useEffect(() => {
     if (checkInDate && checkOutDate && room) {
       const start = new Date(checkInDate);
       const end = new Date(checkOutDate);
-      console.log(start, end);
       const days = Math.ceil(
         (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)
       );
@@ -161,7 +158,7 @@ function RoomPage() {
         endTime: checkOutDate,
         totalPrice: totalPrice,
       };
-      await api.post("/api/addBooking", bookingData);
+      await api.post("/auth/addBooking", bookingData);
       navigate("/Bookings");
     } catch (error) {
       dispatch({
@@ -186,7 +183,7 @@ function RoomPage() {
     }
 
     try {
-      await api.post("/api/addReview", {
+      await api.post("/auth/addReview", {
         roomId: room?.id,
         rating: rating,
         description: reviewText,

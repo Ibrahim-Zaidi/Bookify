@@ -5,6 +5,9 @@ type User = {
   id: number;
   username: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  number?: string;
 };
 
 type AuthError = {
@@ -25,13 +28,14 @@ type AuthContextType = {
   setError: (error: AuthError | null) => void;
   logout: () => void;
   setIsLoggedIn: (loggedIn: boolean) => void;
-  register: (userData: any) => Promise<void>;
+  register: (userData: User) => Promise<void>;
+  setIsLoading: (loading: boolean) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,7 +47,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         setError(null);
 
         // endpoint to get the user info if he is logged in already
-        const user = await api.get("/api/user_information");
+        const response = await api.get("/auth/user_information");
+        const user = response.data;
         setUser(user);
         setIsLoggedIn(true);
       } catch (error) {
@@ -82,7 +87,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      const response = await api.post("/login", credentials);
+      const response = await api.post("/public/login", credentials);
       const { user } = response.data;
       setUser(user);
       setIsLoggedIn(true);
@@ -94,12 +99,12 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function register(userData: any) {
+  async function register(userData: User) {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await api.post("/register", userData);
+      const response = await api.post("public/register", userData);
       const { user } = response.data;
 
       setUser(user);
@@ -118,7 +123,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      await api.post("/api/logout");
+      await api.post("/auth/logout");
     } catch (error) {
       console.error("Logout failed:", error);
       handleError(error, "general");
@@ -133,19 +138,20 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     isLoggedIn,
     error,
-    setIsLoading,
+    setError,
     isLoading,
     login,
     register,
     logout,
     setUser,
     setIsLoggedIn,
+    setIsLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-function useAuth() {
+function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");

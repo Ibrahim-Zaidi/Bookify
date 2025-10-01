@@ -21,7 +21,7 @@ public_routes.post("/refreshToken", refreshAccessToken);
 
 // route for google OAuth
 
-public_routes.post("/auth/google", handleGoogleAuth);
+public_routes.post("/google", handleGoogleAuth);
 
 // this route is for statically adding rooms and categories in the database
 

@@ -57,7 +57,7 @@ function Home() {
     async function getRooms() {
       setIsLoading(true);
       try {
-        const data = await api.get("/getAllRooms");
+        const data = await api.get("/public/getAllRooms");
         const { rooms } = data.data;
         dispatch({ type: "SET_ROOMS", payload: rooms });
       } catch (err: any) {

@@ -16,6 +16,7 @@ function RoomCard({ room }: { room: RoomCardProps }) {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
+    //delivering the room data with the navigation state
     navigate(`/room/${id}`, { state: { room } });
   };
 

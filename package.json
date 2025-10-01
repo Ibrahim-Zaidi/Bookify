@@ -1,5 +1,5 @@
 {
-  "name": "ecommerce_website",
+  "name": "bookify-website",
   "version": "1.0.0",
   "main": "index.js",
   "engines": {
@@ -10,8 +10,6 @@
     "build": "npm run build-client && npm run build-server",
     "build-client": "cd Client && npm install && npm run build",
     "build-server": "cd Server && npm install && npm run build",
-    "postbuild": "npm run copy-client",
-    "copy-client": "if not exist Server\\public mkdir Server\\public && xcopy Client\\dist Server\\public /E /I /Y",
     "start": "cd Server && npm start"
   },
   "keywords": [],
