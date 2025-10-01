@@ -11,7 +11,7 @@
     "build-client": "cd Client && npm install && npm run build",
     "build-server": "cd Server && npm install && npm run build",
     "postbuild": "npm run copy-client",
-    "copy-client": "if not exist Server\\public mkdir Server\\public && xcopy Client\\dist Server\\public /E /I /Y",
+    "copy-client": "mkdir -p Server/public && cp -r Client/dist/* Server/public/",
     "start": "cd Server && npm start"
   },
   "keywords": [],
