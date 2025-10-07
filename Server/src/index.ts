@@ -1,18 +1,18 @@
 import express from "express";
 import passport from "passport";
-import path from "path";
-import public_routes from "./routes/publicRoutes";
-import auth_Routes from "./routes/authRoutes";
-import keys from "./config/keys";
+// import path from "path";
+import public_routes from "./routes/publicRoutes.js";
+import auth_Routes from "./routes/authRoutes.js";
+import keys from "./config/keys.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authMiddleware from "./Middlewares/authMiddlware";
-import "dotenv/config.js";
+import authMiddleware from "./Middlewares/authMiddlware.js";
 import bodyParser from "body-parser";
+import "dotenv/config.js";
 
 const port = keys.port;
 const app = express();
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
 // middlewares
 app.use(
@@ -27,19 +27,19 @@ app.use(
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(passport.initialize());
+app.use(cookieParser());
 
 // Routes
 app.use("/api/public", public_routes);
 app.use("/api/auth", authMiddleware, auth_Routes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "Server", "public")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "Server", "public")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "Server", "public", "index.html"));
-  });
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.join(__dirname, "Server", "public", "index.html"));
+//   });
+// }
 
 app.listen(port, () => console.log("server is running in port : " + port));
