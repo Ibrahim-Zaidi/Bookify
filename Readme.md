@@ -24,3 +24,7 @@
 <li>Booking</li>
 <li>Error Page</li>
 </ul>
+
+<img width="1899" height="1427" alt="booki![Uploading bookify_welcoming.png…]()
+fy_home" src="https://github.com/user-attachments/assets/a3d44e02-1efa-4995-a9cf-e380b8c05c4c" />
+
