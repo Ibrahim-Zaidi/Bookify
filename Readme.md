@@ -9,6 +9,7 @@
 <ul>
 <li>Node.js as the backend environment in this app</li>
 <li>Express middlware as the handler of the requests/responses ongoing-duality</li>
+<li>Provided both Google OAuth, and passport for simple registration</li>
 <li>Prisma postgres to model the application data</li>
 <li>React with typescript for displaying the UI components</li>
 <li>The Context API for managing the state in the application</li>
@@ -24,3 +25,15 @@
 <li>Booking</li>
 <li>Error Page</li>
 </ul>
+
+# Installation
+
+npm install
+
+# Setup database
+
+npx prisma migrate dev
+
+# Run development server
+
+npm run dev
