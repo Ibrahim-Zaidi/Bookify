@@ -25,9 +25,6 @@
 <li>Error Page</li>
 </ul>
 
-<img width="1200" height="627" alt="booki![Uploading bookify_welcoming.png…]()fy_home" src="https://github.com/user-attachments/assets/a3d44e02-1efa-4995-a9cf-e380b8c05c4c" />
-<img width="1200" height="628" alt="bookify_welcoming" src="https://github.com/user-attachments/assets/282e62d0-0ddc-4859-be26-447b0b0e1f6a" />
-
 
 # Installation
 
