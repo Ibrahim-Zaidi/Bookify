@@ -10,6 +10,7 @@ Bookify aims to make booking rooms an easier process by providing a nice UI, con
 <li>Prisma postgres to model the application data</li>
 <li>Authentication provided, either with Google oAuth, Or passport for simple registration</li>
 <li>React with typescript for displaying the UI components</li>
+ <li>Used Css Modules for Styling the Client Side</li>
 <li>The Context API for managing the state in the application</li>
 </ul>
 
