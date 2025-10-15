@@ -1,4 +1,4 @@
-<h1> Welcomen to Bookify </h1>
+<h1> Welcome to Bookify </h1>
  
 <h2>Summary</h2>
 Bookify aims to make booking rooms an easier process buy providing a nice UI, convinient client side and a clean logique for the server side
