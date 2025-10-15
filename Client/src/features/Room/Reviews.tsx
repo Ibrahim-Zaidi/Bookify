@@ -1,9 +1,6 @@
-// import { useState } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "./Reviews.module.css";
 import api from "../../api/axios";
-
-// Static reviews data
 
 type reviewType = {
   userId?: number;
@@ -13,38 +10,23 @@ type reviewType = {
   description: string;
 };
 
-const reviews: reviewType[] = [
-  {
-    userId: 1,
-    username: "JohnDoe",
-    roomId: 1,
-    rating: 5,
-    description: "Amazing room!",
-  },
-  {
-    username: "JaneSmith",
-    roomId: 1,
-    rating: 4,
-    description: "Very comfortable stay.",
-  },
-];
+function Reviews({ roomId: _roomId }: { roomId: number }) {
+  const [reviews, setReviews] = useState<reviewType[]>([]);
 
-function Reviews({ roomId }) {
-  console.log(roomId);
-  // useEffect(() => {
-  //   async function fetchRoomReviews() {
-  //     try {
-  //       const response = await api.get(`/api/getRoomReviews`, {
-  //         roomId,
-  //       });
-  //       console.log(response);
-  //     } catch (error) {
-  //       console.error("Failed to fetch room reviews:", error);
-  //     }
-  //   }
+  useEffect(() => {
+    async function fetchRoomReviews() {
+      try {
+        const response = await api.get(`/api/getRoomReviews`, {
+          roomId: _roomId,
+        });
+        setReviews(response.data.reviews);
+      } catch (error) {
+        console.error("Failed to fetch room reviews:", error);
+      }
+    }
 
-  //   fetchRoomReviews();
-  // }, []);
+    fetchRoomReviews();
+  }, [_roomId]);
 
   const renderStars = (rating: number) => {
     return (
@@ -61,9 +43,7 @@ function Reviews({ roomId }) {
     );
   };
 
-  // Helper function to get initials from username
   const getInitials = (username: string) => {
-    // Get first letter, or first two letters if name contains space
     if (username.includes(" ")) {
       const [first, last] = username.split(" ");
       return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
@@ -71,7 +51,6 @@ function Reviews({ roomId }) {
     return username.charAt(0).toUpperCase();
   };
 
-  // If no reviews, show empty state
   if (reviews.length === 0) {
     return (
       <div className={styles.emptyState}>
@@ -83,7 +62,6 @@ function Reviews({ roomId }) {
 
   return (
     <div className={styles.reviewsContainer}>
-      {/* Review statistics */}
       <div className={styles.reviewStats}>
         <div className={styles.averageRating}>
           <span className={styles.ratingNumber}>
@@ -95,14 +73,13 @@ function Reviews({ roomId }) {
           <span className={styles.outOf}>/5</span>
         </div>
         <div className={styles.totalReviews}>
-          Based on {reviews.length}{" "}
+          Based on {reviews.length}
           {reviews.length === 1 ? "review" : "reviews"}
         </div>
       </div>
 
-      {/* Reviews list */}
       <div className={styles.reviewsList}>
-        {reviews.map((review, index) => (
+        {reviews.map((review: reviewType, index: number) => (
           <div
             key={review.userId || `review-${index}`}
             className={styles.reviewCard}
@@ -115,7 +92,6 @@ function Reviews({ roomId }) {
               </div>
               <div className={styles.reviewMeta}>
                 <div className={styles.reviewerName}>{review.username}</div>
-                {/* No date in static data */}
               </div>
               <div className={styles.reviewRating}>
                 {renderStars(review.rating)}

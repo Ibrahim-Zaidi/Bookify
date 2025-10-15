@@ -1,27 +1,24 @@
-/* Global Styles */
 :root {
-  --main-color: #e3eef5; /* Light background color */
-  --secondary-color: #eaebd0; /* Secondary background color for forms */
-  --primary-color: #e63946; /* Red color for primary buttons and highlights */
-  --accent-color: #f1c6c6; /* Light accent color for sections */
-  --text-color: #333; /* Default text color */
-  --text-light-color: #777; /* Lighter text for description and labels */
-  --button-bg-color: #e63946; /* Button background color */
-  --button-hover-color: #c8323f; /* Hover color for buttons */
-  --input-border-color: #ccc; /* Border color for inputs */
+  --main-color: #e3eef5;
+  --secondary-color: #eaebd0;
+  --primary-color: #e63946;
+  --accent-color: #f1c6c6;
+  --text-color: #333;
+  --text-light-color: #777;
+  --button-bg-color: #e63946;
+  --button-hover-color: #c8323f;
+  --input-border-color: #ccc;
 }
 
-/* Container */
 .container {
   padding: 1rem;
-  /* font-family: "Arial", sans-serif; */
+
   background-color: var(--main-color);
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;

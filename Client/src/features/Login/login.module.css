@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poetsen+One&display=swap");
 
-/* Main Container - Mobile First */
 .loginContainer {
   min-height: 100vh;
   width: 100%;
@@ -17,7 +16,6 @@
   position: relative;
 }
 
-/* Add title section for consistency */
 .loginContainer::before {
   content: "";
   position: absolute;
@@ -29,7 +27,6 @@
   text-align: center;
 }
 
-/* Title styling (if you want to add Bookify title) */
 .titleContainer {
   display: flex;
   flex-direction: column;
@@ -311,21 +308,18 @@
     gap: 2rem;
   }
 
-  /* Enhanced hover effects for desktop */
   .inputField input:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
-/* Large Desktop */
 @media (min-width: 1200px) {
   .loginForm {
     max-width: 550px;
   }
 }
 
-/* Loading State */
 .loginForm.loading {
   opacity: 0.7;
   pointer-events: none;
@@ -373,13 +367,11 @@
   gap: 0.25rem;
 }
 
-/* Success States */
 .inputField input.success {
   border-color: #27ae60;
   background-color: #f2f9f4;
 }
 
-/* Alert/Notification Styles */
 .alertMessage {
   padding: 0.75rem 1rem;
   border-radius: 8px;
@@ -419,7 +411,6 @@
   }
 }
 
-/* Focus visible for keyboard navigation */
 .button:focus-visible,
 .forgotPassword:focus-visible,
 .registerPrompt a:focus-visible {
@@ -427,7 +418,6 @@
   outline-offset: 2px;
 }
 
-/* High contrast mode support */
 @media (prefers-contrast: high) {
   .loginForm {
     border: 2px solid #000;
@@ -442,7 +432,6 @@
   }
 }
 
-/* Very small screens */
 @media (max-width: 320px) {
   .loginContainer {
     padding: 0.5rem;
@@ -463,9 +452,6 @@
   }
 }
 
-/* Add these styles to your existing login.module.css */
-
-/* Register Button Styles */
 .registerButton {
   background: none;
   border: none;
@@ -491,7 +477,6 @@
   border-radius: 2px;
 }
 
-/* Alternative: If you want a more prominent register button */
 .registerButtonAlt {
   padding: 0.75rem 1.5rem;
   border: 2px solid var(--third-color);
@@ -517,7 +502,6 @@
   transform: translateY(0);
 }
 
-/* Ensure loginOptions div is properly styled */
 .loginOptions {
   display: flex;
   flex-direction: column;
@@ -526,7 +510,6 @@
   text-align: center;
 }
 
-/* Update registerPrompt to work with the button */
 .registerPrompt {
   font-size: 0.9rem;
   color: #666;

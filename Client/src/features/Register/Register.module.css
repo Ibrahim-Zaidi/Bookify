@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Poetsen+One&display=swap");
 
-/* Main Container - Mobile First */
 .mainContainer {
   min-height: 100vh;
   width: 100%;
@@ -16,7 +15,6 @@
   position: relative;
 }
 
-/* Title Container */
 .titleContainer {
   display: flex;
   flex-direction: column;

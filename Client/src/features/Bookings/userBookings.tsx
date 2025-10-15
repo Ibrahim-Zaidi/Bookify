@@ -54,7 +54,6 @@ function UserBookings() {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
       <nav className={styles.navbar}>
         <div className={styles.navLeft}>
           <button
@@ -73,7 +72,6 @@ function UserBookings() {
         </div>
       </nav>
 
-      {/* Page Content */}
       <main className={styles.content}>
         <div className={styles.pageHeader}>
           <h1>My Bookings</h1>
@@ -82,7 +80,6 @@ function UserBookings() {
           </p>
         </div>
 
-        {/* Loading State */}
         {isLoading && (
           <div className={styles.loadingContainer}>
             <div className={styles.loadingSpinner}></div>
@@ -90,7 +87,6 @@ function UserBookings() {
           </div>
         )}
 
-        {/* Error State */}
         {error && (
           <div className={styles.errorContainer}>
             <p>{error}</p>
@@ -100,7 +96,6 @@ function UserBookings() {
           </div>
         )}
 
-        {/* Empty State */}
         {!isLoading && !error && bookings.length === 0 && (
           <div className={styles.emptyState}>
             <div className={styles.emptyStateIcon}>🏠</div>
@@ -131,7 +126,6 @@ function UserBookings() {
         )}
       </main>
 
-      {/* Delete Confirmation Modal */}
       {showConfirmation && (
         <div className={styles.modalOverlay}>
           <div className={styles.modal}>
@@ -161,9 +155,8 @@ function UserBookings() {
         </div>
       )}
 
-      {/* Footer */}
       <footer className={styles.footer}>
-        <p>© 2024 Bookify. All rights reserved.</p>
+        <p>© 2026 Bookify. All rights reserved... :)</p>
       </footer>
     </div>
   );

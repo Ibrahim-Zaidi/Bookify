@@ -1,6 +1,5 @@
 import styles from "./userBookings.module.css";
 import { formatDate, calculateNights } from "../../utils/helpers";
-// import { useEffect } from "react";
 import api from "../../api/axios";
 
 interface BookingProps {

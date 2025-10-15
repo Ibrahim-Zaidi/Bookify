@@ -17,19 +17,19 @@ type AuthError = {
 
 type AuthContextType = {
   user: User | null;
-  setUser: (user: User | null) => void;
   isLoggedIn: boolean;
   error: AuthError | null;
+  isLoading: boolean;
+  register: (userData: User) => Promise<void>;
   login: (credentials: {
     identifier: string;
     password: string;
   }) => Promise<void>;
-  isLoading: boolean;
+  setUser: (user: User | null) => void;
   setError: (error: AuthError | null) => void;
-  logout: () => void;
   setIsLoggedIn: (loggedIn: boolean) => void;
-  register: (userData: User) => Promise<void>;
   setIsLoading: (loading: boolean) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -45,8 +45,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         setIsLoading(true);
         setError(null);
-
-        // endpoint to get the user info if he is logged in already
         const response = await api.get("/auth/user_information");
         const user = response.data;
         setUser(user);
