@@ -9,7 +9,6 @@
 <ul>
 <li>Node.js as the backend environment in this app</li>
 <li>Express middlware as the handler of the requests/responses ongoing-duality</li>
-<li>Provided both Google OAuth, and passport for simple registration</li>
 <li>Prisma postgres to model the application data</li>
 <li>React with typescript for displaying the UI components</li>
 <li>The Context API for managing the state in the application</li>
@@ -25,10 +24,6 @@
 <li>Booking</li>
 <li>Error Page</li>
 </ul>
-
-=======
-<img width="1200" height="627" alt="booki![Uploading bookify_welcoming.png…]()fy_home" src="https://github.com/user-attachments/assets/a3d44e02-1efa-4995-a9cf-e380b8c05c4c" />
-<img width="1200" height="628" alt="bookify_welcoming" src="https://github.com/user-attachments/assets/282e62d0-0ddc-4859-be26-447b0b0e1f6a" />
 
 # Installation
 
