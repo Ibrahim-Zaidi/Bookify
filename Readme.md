@@ -1,7 +1,7 @@
 <h1> Welcome to Bookify </h1>
  
 <h2>Summary</h2>
-Bookify aims to make booking rooms an easier process buy providing a nice UI, convinient client side and a clean logique for the server side
+Bookify aims to make booking rooms an easier process by providing a nice UI, convinient client side and a clean logique for the server side
 
 <h2>features</h2>
 <ul>
@@ -10,6 +10,7 @@ Bookify aims to make booking rooms an easier process buy providing a nice UI, co
 <li>Prisma postgres to model the application data</li>
 <li>Authentication provided, either with Google oAuth, Or passport for simple registration</li>
 <li>React with typescript for displaying the UI components</li>
+ <li>Used Css Modules for Styling the Client Side</li>
 <li>The Context API for managing the state in the application</li>
 </ul>
 
