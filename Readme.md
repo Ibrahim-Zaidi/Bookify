@@ -1,38 +1,101 @@
-<h1> Welcome to Bookify </h1>
- 
-<h2>Summary</h2>
-Bookify aims to make booking rooms an easier process by providing a nice UI, convinient client side and a clean logique for the server side
+# Bookify
 
-<h2>features</h2>
-<ul>
-<li>Node.js as the backend environment in this app</li>
-<li>Express middlware as the handler of the requests/responses ongoing-duality</li>
-<li>Prisma postgres to model the application data</li>
-<li>Authentication provided, either with Google oAuth, Or passport for simple registration</li>
-<li>React with typescript for displaying the UI components</li>
- <li>Used Css Modules for Styling the Client Side</li>
-<li>The Context API for managing the state in the application</li>
-</ul>
+A full-stack room booking web application.
 
-<h2>Pages</h2>
-<ul>
-<li>SignIn</li>
-<li>SignUp</li>
-<li>Welcoming </li>
-<li>Main</li>
-<li>Room</li>
-<li>Booking</li>
-<li>Error Page</li>
-</ul>
+## Tech Stack
 
-# Installation
+- **Client:** React, TypeScript, Vite, Tailwind CSS, CSS Modules
+- **Server:** Node.js, Express, TypeScript
+- **Database:** PostgreSQL with Prisma ORM
+- **Auth:** JWT (cookies), Google OAuth, Passport
+- **Deployment:** Docker, Nginx
 
+## Features
+
+- User registration and login (email/password or Google OAuth)
+- Browse available rooms by category
+- Book rooms with date selection
+- Leave reviews and ratings on rooms
+- Protected routes for authenticated users
+
+## Pages
+
+- Welcome
+- Sign In
+- Sign Up
+- Home (room listing)
+- Room (details and reviews)
+- Bookings (user bookings, protected)
+- Error
+
+## Prerequisites
+
+- Node.js 20+
+- PostgreSQL (or Docker)
+
+## Local Development
+
+```
+git clone https://github.com/Ibrahim-Zaidi/Bookify.git
+cd Bookify/Bookify
 npm install
+```
 
-# Setup database
+Create `Server/.env`:
 
-npx prisma migrate dev
+```
+DATABASE_URL=postgresql://user:password@localhost:5432/bookify
+PORT=3000
+JWT_SECRET_KEY=your_jwt_secret
+CLIENT_ID=your_google_client_id
+CLIENT_SECRET=your_google_client_secret
+CALLBACK_URL=http://localhost:3000/api/public/google/callback
+BASE_API_URL=http://localhost:5173
+```
 
-# Run development server
+Create `Client/.env`:
 
+```
+VITE_CLIENT_ID=your_google_client_id
+```
+
+Run database migrations and start:
+
+```
+cd Server && npx prisma migrate dev && cd ..
 npm run dev
+```
+
+## Docker
+
+Create a `.env` file at the root:
+
+```
+JWT_SECRET_KEY=your_jwt_secret
+CLIENT_ID=your_google_client_id
+CLIENT_SECRET=your_google_client_secret
+CALLBACK_URL=http://localhost/api/public/google/callback
+```
+
+Build and run:
+
+```
+docker compose up --build
+```
+
+The app will be available at `http://localhost`.
+
+## Project Structure
+
+```
+Bookify/
+  Client/          React frontend (Vite)
+  Server/          Express API
+    prisma/        Database schema and migrations
+    src/
+      controllers/ Route handlers
+      Middlewares/  JWT auth middleware
+      routes/      API route definitions
+      config/      Environment config
+  docker-compose.yml
+```
