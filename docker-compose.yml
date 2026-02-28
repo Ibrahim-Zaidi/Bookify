@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: bookify
+      POSTGRES_PASSWORD: bookify_secret
+      POSTGRES_DB: bookify
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  server:
+    build: ./Server
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://bookify:bookify_secret@db:5432/bookify
+      PORT: 3000
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      CALLBACK_URL: ${CALLBACK_URL}
+      BASE_API_URL: http://localhost
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+
+  client:
+    build:
+      context: ./Client
+      args:
+        VITE_API_URL_PROD: /api
+        VITE_CLIENT_ID: ${CLIENT_ID}
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:
