@@ -1,8 +1,9 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
-COPY package.json package-lock.json* ./ 
+COPY package.*json ./ 
 COPY prisma ./prisma/ 
-RUN npm ci
+# to ignore postinstall scripts 
+RUN npm i --ignore-scripts
 RUN npx prisma generate
 COPY . .
 RUN npm run build
