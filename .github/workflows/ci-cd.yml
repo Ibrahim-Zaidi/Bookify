@@ -1,0 +1,78 @@
+name: Bookify CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install & Lint Client
+        working-directory: Bookify/Client
+        run: |
+          npm ci
+          npm run lint
+
+      - name: Install & Typecheck Server
+        working-directory: Bookify/Server
+        run: |
+          npm ci --ignore-scripts
+          npx prisma generate
+          npx tsc --noEmit
+
+  deploy-server:
+    needs: lint-and-typecheck
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+
+      - name: Build and Push Server
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        working-directory: Bookify/Server
+        run: heroku container:push web -a bookify-api1
+
+      - name: Release Server
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web -a bookify-api1
+
+  deploy-client:
+    needs: lint-and-typecheck
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:login
+
+      - name: Build and Push Client
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        working-directory: Bookify/Client
+        run: |
+          heroku container:push web -a bookify-client1 \
+            --arg VITE_API_URL=${{ secrets.VITE_API_URL }},VITE_CLIENT_ID=${{ secrets.CLIENT_ID }}
+
+      - name: Release Client
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release web -a bookify-client1
