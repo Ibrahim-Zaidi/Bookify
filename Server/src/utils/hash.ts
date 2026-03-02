@@ -1,4 +1,4 @@
-import {compare, hash as hashPassword} from "bcrypt";
+import { compare, hash as hashPassword } from "bcryptjs";
 import "dotenv/config";
 
 const SALT = 10;
@@ -9,10 +9,8 @@ async function hashing(password: string): Promise<string> {
 
 async function comparePasswords(
   password: string,
-  hashedPassword: string
-
+  hashedPassword: string,
 ): Promise<boolean> {
-
   return await compare(password, hashedPassword);
 }
 

@@ -4,8 +4,8 @@ import { CustomRequest } from "../../types/types";
 
 async function removeReview(req: CustomRequest, res: Response) {
   try {
-    const { id } = req.params;
-    const userId = req.user.id;
+    const { id } = req.params as any;
+    const userId = req.user.id as any;
 
     if (!id) {
       return res.status(400).json({ message: "Review ID is required" });

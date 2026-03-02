@@ -4,7 +4,7 @@ import { CustomRequest } from "../../types/types";
 
 async function getBookings(req: CustomRequest, res: Response) {
   try {
-    const { id: userId } = req.user;
+    const { id: userId } = req.user as any;
 
     const Bookings = await prisma.booking.findMany({
       where: {

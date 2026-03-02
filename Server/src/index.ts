@@ -1,14 +1,14 @@
 import express from "express";
 import passport from "passport";
 // import path from "path";
-import public_routes from "./routes/publicRoutes.js";
-import auth_Routes from "./routes/authRoutes.js";
-import keys from "./config/keys.js";
+import public_routes from "./routes/publicRoutes";
+import auth_Routes from "./routes/authRoutes";
+import keys from "./config/keys";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import authMiddleware from "./Middlewares/authMiddlware.js";
+import authMiddleware from "./Middlewares/authMiddlware";
 import bodyParser from "body-parser";
-import "dotenv/config.js";
+import "dotenv/config";
 
 const port = keys.port;
 const app = express();
@@ -23,12 +23,18 @@ app.use(
       "http://localhost:5174",
     ],
     credentials: true,
-  })
+  }),
 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(cookieParser());
+
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+  });
+});
 
 // Routes
 app.use("/api/public", public_routes);

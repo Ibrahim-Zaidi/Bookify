@@ -2,7 +2,7 @@ import { Response, Request } from "express";
 import prisma from "../../prisma/prismaClient";
 
 async function removeBooking(req: Request, res: Response) {
-  const { id } = req.params;
+  const { id } = req.params as any;
 
   try {
     const findBooking = await prisma.booking.findUnique({

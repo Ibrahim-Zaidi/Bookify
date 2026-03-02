@@ -57,7 +57,7 @@ async function handleGoogleAuth(req: Request, res: Response): Promise<any> {
         username: user.username,
       },
       process.env.JWT_SECRET_KEY as string,
-      { expiresIn: "7d" }
+      { expiresIn: "7d" },
     );
 
     res.cookie("token", token, {

@@ -7,7 +7,7 @@ import { CustomRequest, CustomJwtPayload } from "../types/types";
 async function authMiddleware(
   req: CustomRequest,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const token = req.cookies.token;
 
@@ -22,7 +22,7 @@ async function authMiddleware(
   try {
     const decoded = jwt.verify(
       token,
-      keys.jwtToken as string
+      keys.jwtToken as string,
     ) as CustomJwtPayload;
     const userIdentifier = decoded.userId || decoded.id;
 
