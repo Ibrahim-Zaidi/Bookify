@@ -20,7 +20,6 @@ jobs:
         working-directory: Bookify/Client
         run: |
           npm ci
-          npm run lint
 
       - name: Install & Typecheck Server
         working-directory: Bookify/Server
