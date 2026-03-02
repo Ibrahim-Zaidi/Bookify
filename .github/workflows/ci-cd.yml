@@ -16,14 +16,17 @@ jobs:
         with:
           node-version: 20
 
+      - name: Debug - list files
+        run: ls -la
+
       - name: Install & Lint Client
-        working-directory: Bookify/Client
+        working-directory: Client
         run: |
           npm ci
           npm run lint
 
       - name: Install & Typecheck Server
-        working-directory: Bookify/Server
+        working-directory: Server
         run: |
           npm ci --ignore-scripts
           npx prisma generate
@@ -44,7 +47,7 @@ jobs:
       - name: Build and Push Server
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        working-directory: Bookify/Server
+        working-directory: Server
         run: heroku container:push web -a bookify-api1
 
       - name: Release Server
@@ -67,7 +70,7 @@ jobs:
       - name: Build and Push Client
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        working-directory: Bookify/Client
+        working-directory: Client
         run: |
           heroku container:push web -a bookify-client1 \
             --arg VITE_API_URL_PROD=${{ secrets.VITE_API_URL_PROD }},VITE_CLIENT_ID=${{ secrets.VITE_CLIENT_ID }}
