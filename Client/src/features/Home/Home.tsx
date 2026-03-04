@@ -49,7 +49,7 @@ function Home() {
   console.log(isLoggedIn);
 
   const username =
-    user?.data?.username.split(" ")[0] || user?.username?.split(" ")[0];
+    user?.username.split(" ")[0] || user?.username?.split(" ")[0];
 
   const { selectedCategory, selectedRating, rooms, searchName } = state;
 
