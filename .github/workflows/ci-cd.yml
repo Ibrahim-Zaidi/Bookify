@@ -16,9 +16,6 @@ jobs:
         with:
           node-version: 20
 
-      - name: Debug - list files
-        run: ls -la
-
       - name: Install & Lint Client
         working-directory: Client
         run: |
@@ -39,7 +36,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: installing heroku CLI for the server deployment
+      - name: Installing heroku CLI for the server deployment
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Login to Heroku
@@ -65,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: installing heroku CLI for the client deployment
+      - name: Installing heroku CLI for the client deployment
         run: curl https://cli-assets.heroku.com/install.sh | sh
 
       - name: Login to Heroku
@@ -79,9 +76,7 @@ jobs:
         working-directory: Client
         run: |
           heroku container:push web -a bookify-client1 \
-            --arg 
-            VITE_API_URL_PROD=${{ secrets.VITE_API_URL_PROD }},
-            VITE_CLIENT_ID=${{ secrets.VITE_CLIENT_ID }}
+            --arg VITE_API_URL_PROD=${{ secrets.VITE_API_URL_PROD }},VITE_CLIENT_ID=${{ secrets.VITE_CLIENT_ID }}
 
       - name: Release Client
         env:
