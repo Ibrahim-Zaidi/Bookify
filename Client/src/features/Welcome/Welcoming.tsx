@@ -22,7 +22,7 @@ function Welcoming() {
         </div>
         <div>
           {isLoggedIn ? (
-            <h1>{user?.data.username}</h1>
+            <h1>{user?.username}</h1>
           ) : (
             <>
               <button
