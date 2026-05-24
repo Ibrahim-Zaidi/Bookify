@@ -7,6 +7,7 @@ async function refreshAccessToken(req: Request, res: Response) {
     const { refreshToken } = req.body;
     if (!refreshToken) {
       res.status(400).json({ message: "refresh token is abscent" });
+      return; 
     }
 
     jwt.verify(refreshToken, keys, (err: any, user: any) => {
